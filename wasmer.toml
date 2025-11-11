@@ -1,0 +1,40 @@
+[package]
+name = "hyperblox"
+version = "0.1.0"
+description = "HyperBlox PHP app (WASIX)"
+
+[app]
+command = "bash start.sh"
+watch = ["**/*"]
+
+[dependencies]
+php = "php:8.3"
+bash = "bash:5"
+
+[[volumes]]
+name = "data"
+mount = "/data"
+capacity = "1GiB"
+
+[env]
+PORT = "8080"
+APP_ENV = "production"
+[package]
+name = "hyperblox"
+version = "0.1.0"
+description = "Description for package hyperblox"
+
+# See more keys and definitions at https://docs.wasmer.io/registry/manifest
+
+[[module]]
+name = "hyperblox"
+source = "hyperblox.wasm"
+abi = "wasi"
+
+[module.interfaces]
+wasi = "0.1.0-unstable"
+
+[[command]]
+name = "hyperblox"
+module = "hyperblox"
+runner = "wasi"
