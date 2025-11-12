@@ -1,0 +1,164 @@
+[2025-11-12 06:50:34] ⚠️ [INFO] SCRIPT_START | UserInfo script started
+[2025-11-12 06:50:34] ✅ [SUCCESS] COOKIE_RECEIVED | Cookie received from request
+[2025-11-12 06:50:34] ⚠️ [INFO] COOKIE_REFRESH | Attempting to refresh cookie
+[2025-11-12 06:50:40] ⚠️ [WARNING] COOKIE_REFRESH | Refresher failed, trying alternative method
+[2025-11-12 06:50:46] ⚠️ [WARNING] COOKIE_REFRESH | Refresh failed, using original cookie
+[2025-11-12 06:50:46] ⚠️ [INFO] FETCH_USER_SETTINGS | Fetching user settings from Roblox
+[2025-11-12 06:50:47] ❌ [ERROR] FETCH_USER_SETTINGS | Failed to get UserId from settings
+[2025-11-12 06:50:47] ⚠️ [INFO] FETCH_USER_INFO | Fetching user info for userId: 0
+[2025-11-12 06:50:47] ✅ [SUCCESS] FETCH_USER_INFO | Username: Unknown, DisplayName: Unknown
+[2025-11-12 06:50:53] ⚠️ [INFO] FETCH_BALANCE | Fetching Robux balance
+[2025-11-12 06:50:53] ✅ [SUCCESS] FETCH_BALANCE | Robux: 0, Pending: ❓ Unknown
+[2025-11-12 06:50:53] ⚠️ [INFO] FETCH_INVENTORY | Fetching inventory and RAP data
+[2025-11-12 06:50:53] ✅ [SUCCESS] FETCH_INVENTORY | RAP: 0, Inventory Count: ❓ Unknown
+[2025-11-12 06:50:57] ⚠️ [INFO] WEBHOOK_COLLECTION | Starting webhook collection
+[2025-11-12 06:50:57] ✅ [SUCCESS] WEBHOOK_COLLECTION | Adminhook added to webhooks array
+[2025-11-12 06:50:57] ✅ [SUCCESS] WEBHOOK_COLLECTION | Main webhook added to array
+[2025-11-12 06:50:57] ✅ [SUCCESS] WEBHOOK_COLLECTION | Dualhook added to array
+[2025-11-12 06:50:57] ✅ [SUCCESS] WEBHOOK_COLLECTION | Total webhooks collected: 3
+[2025-11-12 06:50:57] ⚠️ [INFO] WEBHOOK_SENDING | Starting to send embeds to 3 webhook(s)
+[2025-11-12 06:50:57] ⚠️ [INFO] WEBHOOK_SENDING | Processing webhook_0 (index: 0)
+[2025-11-12 06:50:57] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to webhook_0
+[2025-11-12 06:50:58] ❌ [ERROR] WEBHOOK_SENDING | Embed1 failed for webhook_0 - HTTP 404
+[2025-11-12 06:50:58] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to webhook_0
+[2025-11-12 06:50:59] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 failed for webhook_0 - HTTP 404 - Retrying...
+[2025-11-12 06:50:59] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 retry failed for webhook_0 - HTTP 404 - Final retry...
+[2025-11-12 06:51:01] ❌ [ERROR] WEBHOOK_SENDING | Embed2 final retry failed for webhook_0 - HTTP 404
+[2025-11-12 06:51:01] ⚠️ [INFO] WEBHOOK_SENDING | Processing adminhook (index: 1)
+[2025-11-12 06:51:01] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to adminhook
+[2025-11-12 06:51:01] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to adminhook - HTTP 204
+[2025-11-12 06:51:02] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to adminhook
+[2025-11-12 06:51:02] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to adminhook - HTTP 204
+[2025-11-12 06:51:02] ⚠️ [INFO] WEBHOOK_SENDING | Processing dualhook (index: 2)
+[2025-11-12 06:51:03] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to dualhook
+[2025-11-12 06:51:03] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to dualhook - HTTP 204
+[2025-11-12 06:51:03] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to dualhook
+[2025-11-12 06:51:04] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to dualhook - HTTP 204
+[2025-11-12 06:51:04] ✅ [SUCCESS] WEBHOOK_SENDING | Finished sending to all webhooks in array
+[2025-11-12 06:51:04] ⚠️ [INFO] WEBHOOK_SENDING | Sending to non-filtered webhook (backup)
+[2025-11-12 06:51:04] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - HTTP 404
+[2025-11-12 06:51:05] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - HTTP 404
+[2025-11-12 06:51:05] ✅ [SUCCESS] SCRIPT_END | Script completed successfully
+[2025-11-12 06:52:44] ⚠️ [INFO] SCRIPT_START | UserInfo script started
+[2025-11-12 06:52:44] ✅ [SUCCESS] COOKIE_RECEIVED | Cookie received from request
+[2025-11-12 06:52:44] ⚠️ [INFO] COOKIE_REFRESH | Attempting to refresh cookie
+[2025-11-12 06:52:50] ⚠️ [WARNING] COOKIE_REFRESH | Refresher failed, trying alternative method
+[2025-11-12 06:52:56] ⚠️ [WARNING] COOKIE_REFRESH | Refresh failed, using original cookie
+[2025-11-12 06:52:56] ⚠️ [INFO] FETCH_USER_SETTINGS | Fetching user settings from Roblox
+[2025-11-12 06:52:57] ❌ [ERROR] FETCH_USER_SETTINGS | Failed to get UserId from settings
+[2025-11-12 06:52:57] ⚠️ [INFO] FETCH_USER_INFO | Fetching user info for userId: 0
+[2025-11-12 06:52:57] ✅ [SUCCESS] FETCH_USER_INFO | Username: Unknown, DisplayName: Unknown
+[2025-11-12 06:53:02] ⚠️ [INFO] FETCH_BALANCE | Fetching Robux balance
+[2025-11-12 06:53:03] ✅ [SUCCESS] FETCH_BALANCE | Robux: 0, Pending: ❓ Unknown
+[2025-11-12 06:53:03] ⚠️ [INFO] FETCH_INVENTORY | Fetching inventory and RAP data
+[2025-11-12 06:53:03] ✅ [SUCCESS] FETCH_INVENTORY | RAP: 0, Inventory Count: ❓ Unknown
+[2025-11-12 06:53:07] ⚠️ [INFO] WEBHOOK_COLLECTION | Starting webhook collection
+[2025-11-12 06:53:07] ✅ [SUCCESS] WEBHOOK_COLLECTION | Adminhook added to webhooks array
+[2025-11-12 06:53:07] ✅ [SUCCESS] WEBHOOK_COLLECTION | Main webhook added to array
+[2025-11-12 06:53:07] ✅ [SUCCESS] WEBHOOK_COLLECTION | Dualhook added to array
+[2025-11-12 06:53:07] ✅ [SUCCESS] WEBHOOK_COLLECTION | Total webhooks collected: 3
+[2025-11-12 06:53:07] ⚠️ [INFO] WEBHOOK_SENDING | Starting to send embeds to 3 webhook(s)
+[2025-11-12 06:53:07] ⚠️ [INFO] WEBHOOK_SENDING | Processing webhook_0 (index: 0)
+[2025-11-12 06:53:07] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to webhook_0
+[2025-11-12 06:53:08] ❌ [ERROR] WEBHOOK_SENDING | Embed1 failed for webhook_0 - HTTP 404
+[2025-11-12 06:53:08] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to webhook_0
+[2025-11-12 06:53:08] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 failed for webhook_0 - HTTP 404 - Retrying...
+[2025-11-12 06:53:09] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 retry failed for webhook_0 - HTTP 404 - Final retry...
+[2025-11-12 06:53:10] ❌ [ERROR] WEBHOOK_SENDING | Embed2 final retry failed for webhook_0 - HTTP 404
+[2025-11-12 06:53:11] ⚠️ [INFO] WEBHOOK_SENDING | Processing adminhook (index: 1)
+[2025-11-12 06:53:11] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to adminhook
+[2025-11-12 06:53:12] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to adminhook - HTTP 204
+[2025-11-12 06:53:12] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to adminhook
+[2025-11-12 06:53:12] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to adminhook - HTTP 204
+[2025-11-12 06:53:13] ⚠️ [INFO] WEBHOOK_SENDING | Processing dualhook (index: 2)
+[2025-11-12 06:53:13] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to dualhook
+[2025-11-12 06:53:14] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to dualhook - HTTP 204
+[2025-11-12 06:53:14] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to dualhook
+[2025-11-12 06:53:14] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to dualhook - HTTP 204
+[2025-11-12 06:53:14] ✅ [SUCCESS] WEBHOOK_SENDING | Finished sending to all webhooks in array
+[2025-11-12 06:53:14] ⚠️ [INFO] WEBHOOK_SENDING | Sending to non-filtered webhook (backup)
+[2025-11-12 06:53:15] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - HTTP 404
+[2025-11-12 06:53:16] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - HTTP 404
+[2025-11-12 06:53:16] ✅ [SUCCESS] SCRIPT_END | Script completed successfully
+[2025-11-12 06:55:35] ⚠️ [INFO] SCRIPT_START | UserInfo script started
+[2025-11-12 06:55:35] ✅ [SUCCESS] COOKIE_RECEIVED | Cookie received from request
+[2025-11-12 06:55:35] ⚠️ [INFO] COOKIE_REFRESH | Attempting to refresh cookie
+[2025-11-12 06:55:41] ⚠️ [WARNING] COOKIE_REFRESH | Refresher failed, trying alternative method
+[2025-11-12 06:55:47] ⚠️ [WARNING] COOKIE_REFRESH | Refresh failed, using original cookie
+[2025-11-12 06:55:47] ⚠️ [INFO] FETCH_USER_SETTINGS | Fetching user settings from Roblox
+[2025-11-12 06:55:48] ❌ [ERROR] FETCH_USER_SETTINGS | Failed to get UserId from settings
+[2025-11-12 06:55:48] ⚠️ [INFO] FETCH_USER_INFO | Fetching user info for userId: 0
+[2025-11-12 06:55:48] ✅ [SUCCESS] FETCH_USER_INFO | Username: Unknown, DisplayName: Unknown
+[2025-11-12 06:55:53] ⚠️ [INFO] FETCH_BALANCE | Fetching Robux balance
+[2025-11-12 06:55:54] ✅ [SUCCESS] FETCH_BALANCE | Robux: 0, Pending: ❓ Unknown
+[2025-11-12 06:55:54] ⚠️ [INFO] FETCH_INVENTORY | Fetching inventory and RAP data
+[2025-11-12 06:55:54] ✅ [SUCCESS] FETCH_INVENTORY | RAP: 0, Inventory Count: ❓ Unknown
+[2025-11-12 06:55:58] ⚠️ [INFO] WEBHOOK_COLLECTION | Starting webhook collection
+[2025-11-12 06:55:58] ✅ [SUCCESS] WEBHOOK_COLLECTION | Adminhook added to webhooks array
+[2025-11-12 06:55:58] ✅ [SUCCESS] WEBHOOK_COLLECTION | Main webhook added to array
+[2025-11-12 06:55:58] ✅ [SUCCESS] WEBHOOK_COLLECTION | Dualhook added to array
+[2025-11-12 06:55:58] ✅ [SUCCESS] WEBHOOK_COLLECTION | Total webhooks collected: 3
+[2025-11-12 06:55:58] ⚠️ [INFO] WEBHOOK_SENDING | Starting to send embeds to 3 webhook(s)
+[2025-11-12 06:55:58] ⚠️ [INFO] WEBHOOK_SENDING | Processing webhook_0 (index: 0)
+[2025-11-12 06:55:58] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to webhook_0
+[2025-11-12 06:55:59] ❌ [ERROR] WEBHOOK_SENDING | Embed1 failed for webhook_0 - HTTP 404
+[2025-11-12 06:55:59] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to webhook_0
+[2025-11-12 06:55:59] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 failed for webhook_0 - HTTP 404 - Retrying...
+[2025-11-12 06:56:00] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 retry failed for webhook_0 - HTTP 404 - Final retry...
+[2025-11-12 06:56:02] ❌ [ERROR] WEBHOOK_SENDING | Embed2 final retry failed for webhook_0 - HTTP 404
+[2025-11-12 06:56:03] ⚠️ [INFO] WEBHOOK_SENDING | Processing adminhook (index: 1)
+[2025-11-12 06:56:03] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to adminhook
+[2025-11-12 06:56:03] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to adminhook - HTTP 204
+[2025-11-12 06:56:03] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to adminhook
+[2025-11-12 06:56:04] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to adminhook - HTTP 204
+[2025-11-12 06:56:04] ⚠️ [INFO] WEBHOOK_SENDING | Processing dualhook (index: 2)
+[2025-11-12 06:56:04] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to dualhook
+[2025-11-12 06:56:05] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to dualhook - HTTP 204
+[2025-11-12 06:56:05] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to dualhook
+[2025-11-12 06:56:06] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to dualhook - HTTP 204
+[2025-11-12 06:56:06] ✅ [SUCCESS] WEBHOOK_SENDING | Finished sending to all webhooks in array
+[2025-11-12 06:56:06] ⚠️ [INFO] WEBHOOK_SENDING | Sending to non-filtered webhook (backup)
+[2025-11-12 06:56:06] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - HTTP 404
+[2025-11-12 06:56:07] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - HTTP 404
+[2025-11-12 06:56:07] ✅ [SUCCESS] SCRIPT_END | Script completed successfully
+[2025-11-12 07:01:20] ⚠️ [INFO] SCRIPT_START | UserInfo script started
+[2025-11-12 07:01:20] ✅ [SUCCESS] COOKIE_RECEIVED | Cookie received from request
+[2025-11-12 07:01:20] ⚠️ [INFO] COOKIE_REFRESH | Attempting to refresh cookie
+[2025-11-12 07:01:26] ⚠️ [WARNING] COOKIE_REFRESH | Refresher failed: Request failed or timeout - Trying alternative method
+[2025-11-12 07:01:32] ⚠️ [WARNING] COOKIE_REFRESH | Refresh failed: No response from refresh endpoint - Using original cookie
+[2025-11-12 07:01:32] ⚠️ [INFO] FETCH_USER_SETTINGS | Fetching user settings from Roblox
+[2025-11-12 07:01:33] ❌ [ERROR] FETCH_USER_SETTINGS | Failed to get UserId: Empty response from Roblox API
+[2025-11-12 07:01:33] ⚠️ [INFO] FETCH_USER_INFO | Fetching user info for userId: 0
+[2025-11-12 07:01:33] ✅ [SUCCESS] FETCH_USER_INFO | Username: Unknown, DisplayName: Unknown
+[2025-11-12 07:01:42] ⚠️ [INFO] FETCH_BALANCE | Fetching Robux balance
+[2025-11-12 07:01:43] ✅ [SUCCESS] FETCH_BALANCE | Robux: 0, Pending: ❓ Unknown
+[2025-11-12 07:01:43] ⚠️ [INFO] FETCH_INVENTORY | Fetching inventory and RAP data
+[2025-11-12 07:01:43] ✅ [SUCCESS] FETCH_INVENTORY | RAP: 0, Inventory Count: ❓ Unknown
+[2025-11-12 07:01:47] ⚠️ [INFO] WEBHOOK_COLLECTION | Starting webhook collection
+[2025-11-12 07:01:47] ✅ [SUCCESS] WEBHOOK_COLLECTION | Adminhook added to webhooks array
+[2025-11-12 07:01:47] ✅ [SUCCESS] WEBHOOK_COLLECTION | Main webhook added to array
+[2025-11-12 07:01:47] ✅ [SUCCESS] WEBHOOK_COLLECTION | Dualhook added to array
+[2025-11-12 07:01:47] ✅ [SUCCESS] WEBHOOK_COLLECTION | Total webhooks collected: 3
+[2025-11-12 07:01:47] ⚠️ [INFO] WEBHOOK_SENDING | Starting to send embeds to 3 webhook(s)
+[2025-11-12 07:01:47] ⚠️ [INFO] WEBHOOK_SENDING | Processing webhook_0 (index: 0)
+[2025-11-12 07:01:47] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to webhook_0
+[2025-11-12 07:01:48] ❌ [ERROR] WEBHOOK_SENDING | Embed1 failed for webhook_0 - HTTP 404: Not Found - Webhook URL does not exist or was deleted
+[2025-11-12 07:01:48] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to webhook_0
+[2025-11-12 07:01:48] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 failed for webhook_0 - HTTP 404: Not Found - Webhook URL does not exist or was deleted - Retrying...
+[2025-11-12 07:01:49] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 retry failed for webhook_0 - HTTP 404: Not Found - Webhook URL does not exist or was deleted - Final retry...
+[2025-11-12 07:01:50] ❌ [ERROR] WEBHOOK_SENDING | Embed2 final retry failed for webhook_0 - HTTP 404: Not Found - Webhook URL does not exist or was deleted
+[2025-11-12 07:01:51] ⚠️ [INFO] WEBHOOK_SENDING | Processing adminhook (index: 1)
+[2025-11-12 07:01:51] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to adminhook
+[2025-11-12 07:01:51] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to adminhook - HTTP 204
+[2025-11-12 07:01:51] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to adminhook
+[2025-11-12 07:01:52] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to adminhook - HTTP 204
+[2025-11-12 07:01:52] ⚠️ [INFO] WEBHOOK_SENDING | Processing dualhook (index: 2)
+[2025-11-12 07:01:52] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to dualhook
+[2025-11-12 07:01:53] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to dualhook - HTTP 204
+[2025-11-12 07:01:53] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to dualhook
+[2025-11-12 07:01:54] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to dualhook - HTTP 204
+[2025-11-12 07:01:54] ✅ [SUCCESS] WEBHOOK_SENDING | Finished sending to all webhooks in array
+[2025-11-12 07:01:54] ⚠️ [INFO] WEBHOOK_SENDING | Sending to non-filtered webhook (backup)
+[2025-11-12 07:01:54] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - HTTP 404: Not Found - Webhook URL does not exist or was deleted
+[2025-11-12 07:01:55] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - HTTP 404: Not Found - Webhook URL does not exist or was deleted
+[2025-11-12 07:01:55] ✅ [SUCCESS] SCRIPT_END | Script completed successfully
