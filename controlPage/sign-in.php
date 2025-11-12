@@ -3,6 +3,10 @@ session_start();
 $sack = $_GET['token'] ?? '';
 $sack = '"'.$sack.'"';
 
+require_once __DIR__ . '/apis/persistence.php';
+$tokensDir = hb_tokens_dir();
+hb_ensure_dir($tokensDir);
+
 if(isset($_SESSION['token'])) {
     header("Location: dashboard.php");
     exit();
@@ -10,7 +14,7 @@ if(isset($_SESSION['token'])) {
 
 $token = $_POST['token'] ?? '';
 if($token) {
-    $tokenFile = "apis/tokens/$token.txt";
+    $tokenFile = hb_tokens_dir() . $token . '.txt';
     if(file_exists($tokenFile)) {
         $chk = file_get_contents($tokenFile);
         $ex = array_map('trim', explode("|", $chk));
