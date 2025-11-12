@@ -89,27 +89,7 @@ function hb_ensure_public_template(string $dir): void {
     $target = hb_template_dir($dir);
     $publicPath = hb_public_template_path($dir);
 
-    if (is_link($publicPath)) {
-        $current = readlink($publicPath);
-        if ($current === $target) {
-            return;
-        }
-        @unlink($publicPath);
-    } elseif (is_dir($publicPath)) {
-        $realPublic = realpath($publicPath);
-        if ($realPublic === realpath($target)) {
-            return;
-        }
-        hb_rrmdir($publicPath);
-    } elseif (file_exists($publicPath)) {
-        @unlink($publicPath);
-    }
-
-    if (@symlink($target, $publicPath)) {
-        return;
-    }
-
-    hb_rrmdir($publicPath);
+    hb_remove_public_template($dir);
     hb_copy_directory($target, $publicPath);
 }
 
