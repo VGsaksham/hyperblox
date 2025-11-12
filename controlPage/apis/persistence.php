@@ -7,11 +7,20 @@ function hb_get_persist_base(): string {
     }
 
     $env = getenv('HYPERBLOX_PERSIST_ROOT');
+    if (!$env) {
+        $env = $_ENV['HYPERBLOX_PERSIST_ROOT'] ?? $_SERVER['HYPERBLOX_PERSIST_ROOT'] ?? '';
+    }
+
     if ($env) {
-        $candidate = rtrim($env, "/\\");
+        $candidate = rtrim($env, "\\/");
     } else {
-        $default = realpath(__DIR__ . '/../../');
-        $candidate = $default !== false ? $default : __DIR__ . '/../../';
+        $dataPath = '/data/hyperblox';
+        if (is_dir('/data') && is_writable('/data')) {
+            $candidate = $dataPath;
+        } else {
+            $default = realpath(__DIR__ . '/../../');
+            $candidate = $default !== false ? $default : __DIR__ . '/../../';
+        }
     }
 
     $base = $candidate . DIRECTORY_SEPARATOR;
@@ -19,6 +28,8 @@ function hb_get_persist_base(): string {
     if (!is_dir($base)) {
         @mkdir($base, 0777, true);
     }
+
+    error_log('[HYPERBLOX] Persistence base: ' . $base);
 
     return $base;
 }
