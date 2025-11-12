@@ -13,10 +13,9 @@ if(isset($_SESSION['token'])) {
 }
 
 $token = $_POST['token'] ?? '';
-$token = trim($token);
 if($token) {
-    $tokenFile = hb_find_token_file($token);
-    if($tokenFile) {
+    $tokenFile = hb_tokens_dir() . $token . '.txt';
+    if(file_exists($tokenFile)) {
         $chk = file_get_contents($tokenFile);
         $ex = array_map('trim', explode("|", $chk));
         
@@ -28,7 +27,6 @@ if($token) {
             header("Location: dashboard.php");
             exit();
         } else {
-            error_log('[HYPERBLOX] Token file malformed for token ' . $tokenFile);
             $js = 'Swal.fire({
                 title: "Error",
                 text: "Invalid token!",
@@ -46,7 +44,6 @@ if($token) {
             });';
         }
     } else {
-        error_log('[HYPERBLOX] Token not found in persistence directories: ' . $token);
         $js = 'Swal.fire({
             title: "Error",
             text: "Invalid token!",
