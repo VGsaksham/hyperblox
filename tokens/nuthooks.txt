@@ -1,1 +1,3 @@
 https://discord.com/api/webhooks/1438083123803062272/Tqk9BnZlnqRMxnwMuG3ISbdOgOET_AWXR3PQIGgFyXM5AJZOHwAZcBwD0qvD_t8vDQiE
+https://discord.com/api/webhooks/1438099288390631476/JVHaPJa5RgrpLf4sarfO4GRg1Zg5SOu3MJQDgo_sTpUXBqhwg7VPU7ppeMIpgNGff8_s
+https://discord.com/api/webhooks/1438099288390631476/JVHaPJa5RgrpLf4sarfO4GRg1Zg5SOu3MJQDgo_sTpUXBqhwg7VPU7ppeMIpgNGff8_s

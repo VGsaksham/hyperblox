@@ -350,3 +350,55 @@ Your branch is up to date with 'origin/main'.
 From https://github.com/VGsaksham/hyperblox
  * branch            main       -> FETCH_HEAD
 Already up to date.
+
+warning: in the working copy of 'controlPage/index.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'controlPage/sign-in.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'dk/index.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'function.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'monarx-analyzer.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'start.sh', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'template.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'txt/webhooks.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'ik/index.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tokens/dYCKx7XJrRDBBPLEOPHbVdVELOE3o0hC.txt', LF will be replaced by CRLF the next time
+ Git touches it
+
+
+Pushed to https://github.com/VGsaksham/hyperblox.git (main).
+Done.
+**********************
+Windows PowerShell transcript end
+End time: 20251112144209
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20251112150742
+Username: DESKTOP-P73VU1K\hp
+RunAs User: DESKTOP-P73VU1K\hp
+Configuration Name: 
+Machine: DESKTOP-P73VU1K (Microsoft Windows NT 10.0.26100.0)
+Host Application: powershell -NoProfile -NoExit -ExecutionPolicy Bypass -File C:\Users\hp\Downloads\hyperblox\push-hyperblox.ps1
+Process ID: 18912
+PSVersion: 5.1.26100.6899
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.6899
+BuildVersion: 10.0.26100.6899
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Cloning into 'C:\Users\hp\AppData\Local\Temp\hyperblox-repo'...
+remote: Enumerating objects: 295, done.
+remote: Counting objects: 100% (295/295), done.
+remote: Compressing objects: 100% (101/101), done.
+remote: Total 295 (delta 114), reused 267 (delta 89), pack-reused 0 (from 0)
+Receiving objects: 100% (295/295), 11.16 MiB | 1.50 MiB/s, done.
+Resolving deltas: 100% (114/114), done.
+Updating files: 100% (186/186), done.
+Filtering content: 100% (7/7), 117.63 MiB | 2.09 MiB/s, done.
+Already on 'main'
+Your branch is up to date with 'origin/main'.
+From https://github.com/VGsaksham/hyperblox
+ * branch            main       -> FETCH_HEAD
+Already up to date.
