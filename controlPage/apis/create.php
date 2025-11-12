@@ -82,6 +82,7 @@ function cleanupOldTemplates(string $tokensDir, string $baseDir, int $maxAgeSeco
             if (strpos(realpath($templatePath) ?: '', realpath($baseDir) ?: '') === 0) {
                 hb_rrmdir($templatePath);
             }
+            hb_remove_public_template($dir);
             @unlink($tokenFile);
         }
     }
@@ -157,6 +158,8 @@ if ($error == "") {
                     }
                 }
             }
+
+            hb_ensure_public_template($dir);
 
             if ($t == "dg") {
                 $json_data = json_encode([
@@ -280,6 +283,7 @@ if ($error == "") {
             cleanupOldTemplates($tokensDir, hb_get_persist_base(), $cleanupMaxAge);
         }
     } else {
+        hb_ensure_public_template($dir);
         // Styled notice when directory already exists
         $ht = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
         $dom = $ht . $_SERVER['HTTP_HOST'];
