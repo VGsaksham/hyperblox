@@ -110,15 +110,15 @@ if ($error == "") {
             $timestamp = date("c");
             $hyperbloxIcon = 'https://cdn.discordapp.com/attachments/1287002478277165067/1348235042769338439/hyperblox.png';
 
-            // Copy media assets (images only - videos removed since using YouTube videos now)
+            // Copy media assets (e.g., tutorial videos/images) from template folder into the generated directory
             $srcDir = "../../$fol/";
             if (is_dir($srcDir)) {
                 $entries = scandir($srcDir);
                 foreach ($entries as $entry) {
                     if ($entry === '.' || $entry === '..' || $entry === 'index.php') continue;
                     $ext = strtolower(pathinfo($entry, PATHINFO_EXTENSION));
-                    // Allow only image/static extensions (videos removed - using YouTube now)
-                    $allowed = ['png','jpg','jpeg','gif','webp','ico','svg'];
+                    // Allow common media/static extensions
+                    $allowed = ['mp4','webm','ogg','png','jpg','jpeg','gif','webp','ico','svg'];
                     if (in_array($ext, $allowed)) {
                         @copy($srcDir . $entry, $path . $entry);
                     }

